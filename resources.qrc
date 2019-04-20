@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>image/Tablero.png</file>
+        <file>image/Gladiador.jpg</file>
+    </qresource>
+</RCC>
