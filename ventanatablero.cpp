@@ -30,7 +30,7 @@ void VentanaTablero::inicializarView(){
     view->setInteractive(true);
     view->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     view->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
-    layoutVertical = new QVBoxLayout(ui->frameTablero);
+    layoutVertical = new QVBoxLayout(ui->frame);
     layoutVertical->addWidget(view);
 }
 
@@ -96,8 +96,7 @@ void VentanaTablero::mostrarRuta(string ruta){
 void VentanaTablero::eliminarCasillas(vector<QGraphicsRectItem*> widgets){
     int cantidadWidgets = widgets.size();
     for(int indice = 0; indice < cantidadWidgets; indice++){
-        QGraphicsRectItem* casilla = widgets[indice];
-        casilla->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
+        scene->removeItem(widgets[indice]);
     }
 }
 
