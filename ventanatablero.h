@@ -27,10 +27,10 @@ public:
     void inicializarView();
     void generarTablero();
     void posicionarCasilla(int xPos, int yPos, int valorTablero);
-    void pintarCasilla(QGraphicsRectItem* rItem, Qt::GlobalColor color, std::vector<QGraphicsRectItem*> vectorWidgets);
+    void pintarCasilla(QGraphicsRectItem* rItem, Qt::GlobalColor color, std::vector<QGraphicsRectItem*>* vectorWidgets);
     void posicionarObstaculos(int obstaculos[][3], int largoArray);
     void mostrarRuta(std::string ruta);
-    void eliminarCasillas(std::vector<QGraphicsRectItem*> widgets);
+    void eliminarCasillas(std::vector<QGraphicsRectItem*> vectorWidgets);
     ~VentanaTablero();
 
 private:

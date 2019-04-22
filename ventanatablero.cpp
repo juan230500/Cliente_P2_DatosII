@@ -1,7 +1,9 @@
 #include "ventanatablero.h"
 #include "ui_ventanatablero.h"
+
 #define DIMENSION 10
 #define CASILLA 50
+
 using namespace std;
 VentanaTablero::VentanaTablero(QWidget *parent) :
     QDialog(parent),
@@ -13,10 +15,10 @@ VentanaTablero::VentanaTablero(QWidget *parent) :
     generarTablero();
     int obstaculos[][3] = {{1,1,1},{5,7,2},{9,3,3}};
     int largoArray = sizeof(obstaculos)/sizeof(obstaculos[0]);
-    posicionarObstaculos(obstaculos, largoArray);
+    //posicionarObstaculos(obstaculos, largoArray);
     string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
-    mostrarRuta(ruta);
-    eliminarCasillas(rutaWidgets);
+    //mostrarRuta(ruta);
+    //eliminarCasillas(rutaWidgets);
 }
 
 void VentanaTablero::inicializarScene(){
@@ -52,25 +54,25 @@ void VentanaTablero::posicionarCasilla(int guiYPos, int guiXPos, int valorCasill
         rItem->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
         break;
     case 1:
-        pintarCasilla(rItem, Qt::darkCyan, obstaculosWidgets);
+        pintarCasilla(rItem, Qt::darkCyan, &obstaculosWidgets);
         break;
     case 2:
-        pintarCasilla(rItem, Qt::darkGreen, obstaculosWidgets);
+        pintarCasilla(rItem, Qt::darkGreen, &obstaculosWidgets);
         break;
     case 3:
-        pintarCasilla(rItem, Qt::darkMagenta, obstaculosWidgets);
+        pintarCasilla(rItem, Qt::darkMagenta, &obstaculosWidgets);
         break;
     case 4:
-        pintarCasilla(rItem, Qt::lightGray, rutaWidgets);
+        pintarCasilla(rItem, Qt::lightGray, &rutaWidgets);
         break;
     default:
         break;
     }
 }
 
-void VentanaTablero::pintarCasilla(QGraphicsRectItem* rItem, Qt::GlobalColor color, vector<QGraphicsRectItem*> vectorWidgets){
+void VentanaTablero::pintarCasilla(QGraphicsRectItem* rItem, Qt::GlobalColor color, vector<QGraphicsRectItem*>* vectorWidgets){
     rItem->setBrush(QBrush(color, Qt::SolidPattern));
-    vectorWidgets.push_back(rItem);
+    vectorWidgets->push_back(rItem);
 }
 
 void VentanaTablero::posicionarObstaculos(int obstaculos[3][3], int largoArray){
@@ -79,6 +81,7 @@ void VentanaTablero::posicionarObstaculos(int obstaculos[3][3], int largoArray){
         int yPos = obstaculos[indice][1] * CASILLA;
         int tipoObstaculo = obstaculos[indice][2];
         posicionarCasilla(xPos, yPos, tipoObstaculo);
+        //pintarZonaObstáculo()
     }
 }
 
@@ -93,10 +96,11 @@ void VentanaTablero::mostrarRuta(string ruta){
     }
 }
 
-void VentanaTablero::eliminarCasillas(vector<QGraphicsRectItem*> widgets){
-    int cantidadWidgets = widgets.size();
+void VentanaTablero::eliminarCasillas(vector<QGraphicsRectItem*> vectorWidgets){
+    int cantidadWidgets = vectorWidgets.size();
     for(int indice = 0; indice < cantidadWidgets; indice++){
-        scene->removeItem(widgets[indice]);
+        scene->removeItem(vectorWidgets[indice]);
+        delete vectorWidgets[indice];
     }
 }
 

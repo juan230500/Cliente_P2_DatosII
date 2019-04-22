@@ -11,7 +11,7 @@ void colocar(QLabel* L,int fila,int columna){
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    VentanaTablero w;
+    MainWindow w;
 
 //    QPixmap P1(":/image/image/Tablero.png");
 //    QPixmap P2(":/image/image/Gladiador.jpg");

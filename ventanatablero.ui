@@ -31,7 +31,7 @@
      <x>339</x>
      <y>79</y>
      <width>521</width>
-     <height>522</height>
+     <height>521</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -43,7 +43,7 @@
    <property name="maximumSize">
     <size>
      <width>521</width>
-     <height>522</height>
+     <height>521</height>
     </size>
    </property>
    <property name="frameShape">
