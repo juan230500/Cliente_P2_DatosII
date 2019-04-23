@@ -26,9 +26,9 @@ public:
     void inicializarScene();
     void inicializarView();
     void generarTablero();
-    void posicionarCasilla(int xPos, int yPos, int valorTablero);
-    void pintarCasilla(QGraphicsRectItem* rItem, Qt::GlobalColor color, std::vector<QGraphicsRectItem*>* vectorWidgets);
-    void posicionarObstaculos(int obstaculos[][3], int largoArray);
+    void pintarCasilla(int xPos, int yPos, int valorCasilla);
+    void agregarAVector(QGraphicsRectItem* rItem, Qt::GlobalColor color, std::vector<QGraphicsRectItem*>* vectorWidgets);
+    void posicionarObstaculos(std::string obstaculos);
     void mostrarRuta(std::string ruta);
     void eliminarCasillas(std::vector<QGraphicsRectItem*> vectorWidgets);
     ~MainWindow();
@@ -40,7 +40,7 @@ private:
     QVBoxLayout* layoutVertical;
     std::vector<QGraphicsRectItem*> rutaWidgets;
     std::vector<QGraphicsRectItem*> obstaculosWidgets;
-    std::vector<std::vector<QGraphicsRectItem*>> tableroWidgets;
+    QGraphicsRectItem* tableroWidgets[10][10];
 };
 
 #endif // MAINWINDOW_H

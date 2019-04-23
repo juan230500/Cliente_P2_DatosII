@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "qdebug.h"
 
 #define DIMENSION 10
 #define CASILLA 50
@@ -14,12 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
     inicializarScene();
     inicializarView();
     generarTablero();
-    int obstaculos[][3] = {{1,1,1},{5,7,2},{9,3,3}};
-    int largoArray = sizeof(obstaculos)/sizeof(obstaculos[0]);
-    //posicionarObstaculos(obstaculos, largoArray);
+    string obstaculos = "111-572-933";
+    posicionarObstaculos(obstaculos);
     string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
-    //mostrarRuta(ruta);
-    //eliminarCasillas(rutaWidgets);
+    mostrarRuta(ruta);
+    //eliminarCasillas(obstaculosWidgets);
 }
 
 void MainWindow::inicializarScene(){
@@ -38,53 +38,54 @@ void MainWindow::inicializarView(){
 }
 
 void MainWindow::generarTablero(){
-    for(int i = 0; i < DIMENSION; i++){
-        for(int j = 0; j < DIMENSION; j++){
-            posicionarCasilla(i*CASILLA, j*CASILLA, 0);
+    for(int i = 0; i < 10; i++){
+        for(int j = 0; j < 10; j++){
+            QRectF rect(0,0,CASILLA,CASILLA);
+            QGraphicsRectItem* rItem = new QGraphicsRectItem(rect);
+            scene->addItem(rItem);
+            tableroWidgets[i][j] = rItem;
+            pintarCasilla(i, j, 0);
+            rItem->setPos(j*CASILLA, i*CASILLA);
         }
     }
 }
 
-void MainWindow::posicionarCasilla(int guiYPos, int guiXPos, int valorCasilla){
-    QRectF rect(0,0,CASILLA,CASILLA);
-    QGraphicsRectItem* rItem = new QGraphicsRectItem(rect);
-    scene->addItem(rItem);
-    rItem->setPos(guiXPos, guiYPos);
+void MainWindow::pintarCasilla(int xPos, int yPos, int valorCasilla){
+    QGraphicsRectItem* rItem = tableroWidgets[xPos][yPos];
     switch (valorCasilla) {
-    case 0:{
-        rItem->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
-        tableroWidgets.push_back(rItem);
-        break;
-    }
-    case 1:
-        pintarCasilla(rItem, Qt::darkCyan, &obstaculosWidgets);
-        break;
-    case 2:
-        pintarCasilla(rItem, Qt::darkGreen, &obstaculosWidgets);
-        break;
-    case 3:
-        pintarCasilla(rItem, Qt::darkMagenta, &obstaculosWidgets);
-        break;
-    case 4:
-        pintarCasilla(rItem, Qt::lightGray, &rutaWidgets);
-        break;
-    default:
-        break;
+        case 0:
+            rItem->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
+            break;
+        case 1:
+            agregarAVector(rItem, Qt::darkCyan, &obstaculosWidgets);
+            break;
+        case 2:
+            agregarAVector(rItem, Qt::darkGreen, &obstaculosWidgets);
+            break;
+        case 3:
+            agregarAVector(rItem, Qt::darkMagenta, &obstaculosWidgets);
+            break;
+        case 4:
+            agregarAVector(rItem, Qt::lightGray, &rutaWidgets);
+            break;
+        default:
+            break;
     }
 }
 
-void MainWindow::pintarCasilla(QGraphicsRectItem* rItem, Qt::GlobalColor color, vector<QGraphicsRectItem*>* vectorWidgets){
+void MainWindow::agregarAVector(QGraphicsRectItem* rItem, Qt::GlobalColor color, vector<QGraphicsRectItem*>* vectorWidgets){
     rItem->setBrush(QBrush(color, Qt::SolidPattern));
     vectorWidgets->push_back(rItem);
 }
 
-void MainWindow::posicionarObstaculos(int obstaculos[3][3], int largoArray){
-    for(int indice = 0; indice < largoArray; indice++){
-        int xPos = obstaculos[indice][0] * CASILLA;
-        int yPos = obstaculos[indice][1] * CASILLA;
-        int tipoObstaculo = obstaculos[indice][2];
-        posicionarCasilla(xPos, yPos, tipoObstaculo);
-        //pintarZonaObstáculo()
+void MainWindow::posicionarObstaculos(string obstaculos){
+    vector<string> vectorObstaculos;
+    boost::split(vectorObstaculos, obstaculos, boost::is_any_of("-"));
+    for(int indice = 0; indice < vectorObstaculos.size(); indice++){
+        int xPos = stoi(vectorObstaculos[indice].substr(0,1));
+        int yPos = stoi(vectorObstaculos[indice].substr(1,1));
+        int tipoObstaculo = stoi(vectorObstaculos[indice].substr(2,1));
+        pintarCasilla(xPos, yPos, tipoObstaculo);
     }
 }
 
@@ -95,16 +96,16 @@ void MainWindow::mostrarRuta(string ruta){
     for(int indice = 0; indice < cantidadElementos; indice++){
         int xPos = stoi(vectorRuta[indice].substr(0,1));
         int yPos = stoi(vectorRuta[indice].substr(1,1));
-        posicionarCasilla(xPos*CASILLA, yPos*CASILLA, 4);
+        pintarCasilla(xPos, yPos, 4);
     }
 }
 
 void MainWindow::eliminarCasillas(vector<QGraphicsRectItem*> vectorWidgets){
     int cantidadWidgets = vectorWidgets.size();
     for(int indice = 0; indice < cantidadWidgets; indice++){
-        scene->removeItem(vectorWidgets[indice]);
-        delete vectorWidgets[indice];
+        vectorWidgets[indice]->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
     }
+    vectorWidgets.clear();
 }
 
 
