@@ -14,6 +14,7 @@
 #include <boost/algorithm/string.hpp>
 #include <QLabel>
 #include <QPixmap>
+#include "Socket.h"
 
 namespace Ui {
 class MainWindow;

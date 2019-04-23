@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
     mostrarRuta(ruta);
     //eliminarCasillas(obstaculosWidgets);
+    Socket  *socket= &Socket::getInstance();
+    socket->escuchar(8081);
+    socket->enviar("holi:3",8080,"192.168.100.18");
 }
 
 void MainWindow::inicializarScene(){
