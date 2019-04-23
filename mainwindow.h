@@ -39,6 +39,7 @@ private:
     QGraphicsScene* scene;
     QGraphicsView* view;
     QVBoxLayout* layoutVertical;
+    QFrame* Frame;
     std::vector<QGraphicsRectItem*> rutaWidgets;
     std::vector<QGraphicsRectItem*> obstaculosWidgets;
     QGraphicsRectItem* tableroWidgets[10][10];

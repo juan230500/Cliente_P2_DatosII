@@ -23,14 +23,24 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::inicializarScene(){
+    this->setWindowTitle("GLADIADORES");
+
+    QLabel* L1=new QLabel(this);
+    QPixmap P1(":/image/image/Fondo1.png");
+    L1->resize(1200,700);
+    L1->setPixmap(P1);
+
+    Frame=new QFrame(this);
+    Frame->setGeometry(0,0,700,700);
+
+    QLabel* L2=new QLabel(this);
+    L2->setGeometry(750,50,400,600);
+    L2->setStyleSheet("QLabel { background-color : white; color : blue; }");
+    L2->setText("What ever text");
+
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,0,0);
     scene->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
-
-    QLabel* L1=new QLabel(ui->frame);
-    QPixmap P1(":/image/image/Fondo1.png");
-    L1->resize(700,700);
-    L1->setPixmap(P1);
 }
 
 void MainWindow::inicializarView(){
@@ -38,7 +48,7 @@ void MainWindow::inicializarView(){
     view->setInteractive(true);
     view->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     view->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
-    layoutVertical = new QVBoxLayout(ui->frame);
+    layoutVertical = new QVBoxLayout(Frame);
     layoutVertical->addWidget(view);
 }
 
