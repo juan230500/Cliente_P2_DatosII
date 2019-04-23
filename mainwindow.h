@@ -12,6 +12,8 @@
 #include <vector>
 #include <bits/stdc++.h>
 #include <boost/algorithm/string.hpp>
+#include <QLabel>
+#include <QPixmap>
 
 namespace Ui {
 class MainWindow;
@@ -32,7 +34,6 @@ public:
     void mostrarRuta(std::string ruta);
     void eliminarCasillas(std::vector<QGraphicsRectItem*> vectorWidgets);
     ~MainWindow();
-
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* scene;

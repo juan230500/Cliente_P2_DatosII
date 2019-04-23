@@ -3,7 +3,7 @@
 #include "qdebug.h"
 
 #define DIMENSION 10
-#define CASILLA 50
+#define CASILLA 68
 
 using namespace std;
 
@@ -25,7 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::inicializarScene(){
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,0,0);
-    scene->setBackgroundBrush(QBrush(Qt::darkGreen, Qt::SolidPattern));
+    scene->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
+
+    QLabel* L1=new QLabel(ui->frame);
+    QPixmap P1(":/image/image/Fondo1.png");
+    L1->resize(700,700);
+    L1->setPixmap(P1);
 }
 
 void MainWindow::inicializarView(){

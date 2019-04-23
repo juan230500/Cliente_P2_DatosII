@@ -2,7 +2,6 @@
 #include <QApplication>
 #include <QLabel>
 #include <QPixmap>
-#include "ventanatablero.h"
 
 void colocar(QLabel* L,int fila,int columna){
     L->setGeometry(columna*70,fila*70,L->width(),L->height());

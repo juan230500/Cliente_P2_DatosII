@@ -26,16 +26,13 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
-    ventanatablero.cpp
+        mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h \
-    ventanatablero.h
+        mainwindow.h
 
 FORMS += \
-        mainwindow.ui \
-    ventanatablero.ui
+        mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
