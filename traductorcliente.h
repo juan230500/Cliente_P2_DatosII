@@ -8,10 +8,10 @@ using namespace std;
 using namespace rapidjson;
 
 
-class traductorServidor
+class TraductorCliente
 {
 public:
-    traductorServidor();
+    TraductorCliente();
     string SerializarInformacion(string obstaculos1 ,int atributosGladiador1[9],int atributosGladiador2[9],string ruta,bool finalizacion,int AvanceGenetico);
     void DeserializarInfoDeSimulacion(string json ,string *obstaculos,int atributosGladiador1[9],int atributosGladiador2[9],bool *finalizacion,int *AvanceGenetico,string *ruta);
 

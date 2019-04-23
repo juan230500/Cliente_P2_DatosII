@@ -1,11 +1,11 @@
 #include "traductorcliente.h"
 #include <iostream>
 using namespace std;
-traductorServidor::traductorServidor()
+TraductorCliente::TraductorCliente()
 {
 
 }
-void traductorServidor::DeserializarInfoDeSimulacion(string json,string *obstaculos,int atributosGladiador1[9],int atributosGladiador2[9],bool *finalizacion,int *AvanceGenetico,string *ruta)
+void TraductorCliente::DeserializarInfoDeSimulacion(string json,string *obstaculos,int atributosGladiador1[9],int atributosGladiador2[9],bool *finalizacion,int *AvanceGenetico,string *ruta)
 {
     Document d;
     d.Parse(json.c_str());
@@ -22,7 +22,7 @@ void traductorServidor::DeserializarInfoDeSimulacion(string json,string *obstacu
     *finalizacion=d["finalizacion"].GetBool();
     *AvanceGenetico=d["AvanceGenetico"].GetInt();
 }
-string traductorServidor::SerializarInformacion(string obstaculos1 , int atributosGladiador1[9] , int atributosGladiador2[9], string ruta, bool finalizacion, int AvanceGenetico)
+string TraductorCliente::SerializarInformacion(string obstaculos1 , int atributosGladiador1[9] , int atributosGladiador2[9], string ruta, bool finalizacion, int AvanceGenetico)
 {
 
     const char* json = "{\"AvanceGenetico\":0,"

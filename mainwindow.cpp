@@ -15,14 +15,23 @@ MainWindow::MainWindow(QWidget *parent) :
     inicializarScene();
     inicializarView();
     generarTablero();
-    string obstaculos = "111-572-933";
-    posicionarObstaculos(obstaculos);
-    string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
-    mostrarRuta(ruta);
-    //eliminarCasillas(obstaculosWidgets);
     Socket  *socket= &Socket::getInstance();
-    socket->escuchar(8081);
-    socket->enviar("holi:3",8080,"192.168.100.18");
+    string json = socket->escuchar(8081);
+    string obstaculos;
+    string ruta;
+    int g1[9];
+    int g2[9];
+    bool finalizacion;
+    int avanceGenetico;
+    TraductorCliente *traductor = new TraductorCliente();
+    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico, &ruta);
+    posicionarObstaculos(obstaculos);
+    mostrarRuta(ruta);
+    texto->setText(QString::fromStdString(json));
+    //socket->enviar("holi:3",8080,"192.168.100.18");
+    //string obstaculos = "111-572-933";
+    //string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
+    //eliminarCasillas(obstaculosWidgets);
 }
 
 void MainWindow::inicializarScene(){
@@ -33,13 +42,13 @@ void MainWindow::inicializarScene(){
     L1->resize(1200,700);
     L1->setPixmap(P1);
 
-    Frame=new QFrame(this);
-    Frame->setGeometry(0,0,700,700);
+    frame=new QFrame(this);
+    frame->setGeometry(0,0,700,700);
 
-    QLabel* L2=new QLabel(this);
-    L2->setGeometry(750,50,400,600);
-    L2->setStyleSheet("QLabel { background-color : white; color : blue; }");
-    L2->setText("What ever text");
+    texto=new QLabel(this);
+    texto->setGeometry(750,50,400,600);
+    texto->setStyleSheet("QLabel { background-color : white; color : blue; }");
+    texto->setText("What ever text");
 
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,0,0);
@@ -51,7 +60,7 @@ void MainWindow::inicializarView(){
     view->setInteractive(true);
     view->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     view->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
-    layoutVertical = new QVBoxLayout(Frame);
+    layoutVertical = new QVBoxLayout(frame);
     layoutVertical->addWidget(view);
 }
 

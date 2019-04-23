@@ -15,6 +15,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include "Socket.h"
+#include "traductorcliente.h"
 
 namespace Ui {
 class MainWindow;
@@ -40,7 +41,8 @@ private:
     QGraphicsScene* scene;
     QGraphicsView* view;
     QVBoxLayout* layoutVertical;
-    QFrame* Frame;
+    QFrame* frame;
+    QLabel* texto;
     std::vector<QGraphicsRectItem*> rutaWidgets;
     std::vector<QGraphicsRectItem*> obstaculosWidgets;
     QGraphicsRectItem* tableroWidgets[10][10];
