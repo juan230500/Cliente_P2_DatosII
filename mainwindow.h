@@ -14,6 +14,7 @@
 #include <boost/algorithm/string.hpp>
 #include <QLabel>
 #include <QPixmap>
+#include <QString>
 
 namespace Ui {
 class MainWindow;
@@ -33,6 +34,7 @@ public:
     void posicionarObstaculos(std::string obstaculos);
     void mostrarRuta(std::string ruta);
     void eliminarCasillas(std::vector<QGraphicsRectItem*> vectorWidgets);
+    void ColocarObstaculo(char id, int fila, int columna);
     ~MainWindow();
 private:
     Ui::MainWindow *ui;

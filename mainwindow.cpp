@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     posicionarObstaculos(obstaculos);
     string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
     mostrarRuta(ruta);
+    ColocarObstaculo('3',1,3);
     //eliminarCasillas(obstaculosWidgets);
 }
 
@@ -121,6 +122,20 @@ void MainWindow::eliminarCasillas(vector<QGraphicsRectItem*> vectorWidgets){
         vectorWidgets[indice]->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
     }
     vectorWidgets.clear();
+}
+
+void MainWindow::ColocarObstaculo(char id, int fila, int columna)
+{
+    int borde=12;
+    QString  S=":/image/image/";
+    S+=id;
+    S+=".png";
+    qDebug()<<S;
+
+    QLabel* L1=new QLabel(this);
+    QPixmap P1(S);
+    L1->setGeometry(borde+columna*68,borde+fila*68,65,65);
+    L1->setPixmap(P1);
 }
 
 
