@@ -2,12 +2,12 @@
 #include "ui_mainwindow.h"
 #include "qdebug.h"
 
-#define CASILLA 68
 #define FONDO "#222831"
 #define COLOR_RUTA_A "#ff2e63"
 #define COLOR_RUTA_B "#08d9d6"
 #define COLOR_RUTA_C "#6a2c70"
 
+const int CASILLA = 68*10/DIMENSION;
 
 using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
@@ -20,10 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
     inicializarScene();
     inicializarView();
     generarTablero();
-    string obstaculos = "111-572-733";
-    posicionarObstaculos(obstaculos);
-    string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
-    mostrarRuta(ruta, 1);
+//    string obstaculos = "111-572-733";
+//    posicionarObstaculos(obstaculos);
+//    string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
+//    mostrarRuta(ruta, 1);
 }
 
 void MainWindow::inicializarFrame(){
@@ -34,13 +34,15 @@ void MainWindow::inicializarFrame(){
 
     frame=new QFrame(this);
     frame->setGeometry(0,0,700,700);
+
     texto=new QLabel(this);
+    QPixmap P2(":/image/image/labelBackground.png");
     texto->setGeometry(750,50,400,500);
-    texto->setStyleSheet("QLabel { background-color : white; color : blue; }");
-    texto->setText("What ever text");
+    texto->setPixmap(P2);
+
     botonSigIteracion = new QPushButton("Siguiente Iteracion", this);
     connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (generarSigIteracion()));
-    botonSigIteracion->setGeometry(QRect(QPoint(870, 600), QSize(150, 50)));
+    botonSigIteracion->setGeometry(870,600,150,50);
 }
 
 void MainWindow::inicializarScene(){
@@ -72,6 +74,7 @@ void MainWindow::generarTablero(){
 }
 
 void MainWindow::posicionarObstaculos(string obstaculos){
+    obstaculos = obstaculos.substr(0, obstaculos.size()-1);
     vector<string> vectorObstaculos;
     boost::split(vectorObstaculos, obstaculos, boost::is_any_of("-"));
     for(int indice = 0; indice < vectorObstaculos.size(); indice++){
@@ -83,6 +86,7 @@ void MainWindow::posicionarObstaculos(string obstaculos){
 }
 
 void MainWindow::mostrarRuta(string ruta, bool A){
+    ruta = ruta.substr(0, ruta.size()-1);
     vector<string> vectorRuta;
     boost::split(vectorRuta, ruta, boost::is_any_of("-"));
     int cantidadElementos = vectorRuta.size();
@@ -157,10 +161,25 @@ void MainWindow::generarSigIteracion(){
             Pintadas[i][j] = 0;
         }
     }
-    string obstaculos = "551-572-343";
+    Socket  *socket= &Socket::getInstance();
+    socket->enviar("", 8082, "192.168.100.7");
+    string json = socket->escuchar(8081);
+    string obstaculos;
+    string rutaPathfinding;
+    string rutaBacktracking;
+    int g1[9];
+    int g2[9];
+    bool finalizacion;
+    int avanceGenetico;
+    string muerte1;
+    string muerte2;
+    TraductorCliente *traductor = new TraductorCliente();
+    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico, &rutaPathfinding, &rutaBacktracking);
     posicionarObstaculos(obstaculos);
-    string ruta = "00-10-20-30-40-50-60-70-80-90-91-92-93-94-95-96-97-98-99";
-    mostrarRuta(ruta,0);
+    mostrarRuta(rutaPathfinding, 0);
+    mostrarRuta(rutaBacktracking, 1);
+    //texto->setWordWrap(true);
+    //texto->setText(QString::fromStdString(json));
 }
 
 MainWindow::~MainWindow(){

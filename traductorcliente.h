@@ -12,8 +12,8 @@ class TraductorCliente
 {
 public:
     TraductorCliente();
-    string SerializarInformacion(string obstaculos1 ,int atributosGladiador1[9],int atributosGladiador2[9],string ruta,bool finalizacion,int AvanceGenetico);
-    void DeserializarInfoDeSimulacion(string json ,string *obstaculos,int atributosGladiador1[9],int atributosGladiador2[9],bool *finalizacion,int *AvanceGenetico,string *ruta);
+    string SerializarInformacion(string obstaculos1 ,int atributosGladiador1[9],int atributosGladiador2[9],string rutaA,string rutaB,bool finalizacion,int AvanceGenetico);
+    void DeserializarInfoDeSimulacion(string json ,string *obstaculos,int atributosGladiador1[9],int atributosGladiador2[9],bool *finalizacion,int *AvanceGenetico,string *rutaA,string *rutaB);
 
 };
 

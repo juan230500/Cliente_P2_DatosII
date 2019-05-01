@@ -26,8 +26,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow{
     Q_OBJECT
 
 public:
@@ -44,6 +43,7 @@ public:
     void crearZonaObstaculo(int fila, int columna, int rango);
     void eliminarZonaObstaculos();
     ~MainWindow();
+    QLabel* texto;
 
 private slots:
     void generarSigIteracion();
@@ -55,7 +55,6 @@ private:
     QGraphicsView* view;
     QVBoxLayout* layoutVertical;
     QFrame* frame;
-    QLabel* texto;
     std::vector<QGraphicsRectItem*> rutaWidgets;
     std::vector<QGraphicsRectItem*> obstaculosWidgets;
     std::vector<QGraphicsRectItem*> zonaWidgets;

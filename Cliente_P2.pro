@@ -28,12 +28,12 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         Socket.cpp \
-    traductorcliente.cpp
+        traductorcliente.cpp
 
 HEADERS += \
         mainwindow.h \
         Socket.h \
-    traductorcliente.h
+        traductorcliente.h
 
 FORMS += \
         mainwindow.ui
