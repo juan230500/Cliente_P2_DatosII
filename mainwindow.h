@@ -36,7 +36,9 @@ public:
     void posicionarObstaculos(std::string obstaculos);
     void mostrarRuta(std::string ruta);
     void eliminarCasillas(std::vector<QGraphicsRectItem*> vectorWidgets);
-    void ColocarObstaculo(char id, int fila, int columna);
+    void colocarObstaculo(string id, int fila, int columna);
+    void crearZonaObstaculo(int fila, int columna, int rango);
+    void eliminarZonaObstaculos();
     ~MainWindow();
 private:
     Ui::MainWindow *ui;
@@ -47,6 +49,7 @@ private:
     QLabel* texto;
     std::vector<QGraphicsRectItem*> rutaWidgets;
     std::vector<QGraphicsRectItem*> obstaculosWidgets;
+    std::vector<QGraphicsRectItem*> zonaWidgets;
     QGraphicsRectItem* tableroWidgets[10][10];
 };
 

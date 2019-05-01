@@ -12,12 +12,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-    string obstaculos = "221-572-733";
-    string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
-    w.mostrarRuta(ruta);
-    w.posicionarObstaculos(obstaculos);
-//    w.eliminarCasillas(obstaculosWidgets);
-
 //    Socket  *socket= &Socket::getInstance();
 //    string json = socket->escuchar(8081);
 //    string obstaculos;

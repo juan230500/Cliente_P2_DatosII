@@ -15,12 +15,13 @@ MainWindow::MainWindow(QWidget *parent) :
     inicializarScene();
     inicializarView();
     generarTablero();
-    string obstaculos = "111-572-933";
+    string obstaculos = "111-572-733";
     posicionarObstaculos(obstaculos);
     string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
     mostrarRuta(ruta);
-    ColocarObstaculo('3',1,3);
-    //eliminarCasillas(obstaculosWidgets);
+//    eliminarCasillas(obstaculosWidgets);
+//    eliminarCasillas(rutaWidgets);
+//    eliminarZonaObstaculos();
 }
 
 void MainWindow::inicializarScene(){
@@ -60,32 +61,9 @@ void MainWindow::generarTablero(){
             QGraphicsRectItem* rItem = new QGraphicsRectItem(rect);
             scene->addItem(rItem);
             tableroWidgets[i][j] = rItem;
-            pintarCasilla(i, j, 0);
             rItem->setPos(j*CASILLA, i*CASILLA);
-        }
-    }
-}
-
-void MainWindow::pintarCasilla(int xPos, int yPos, int valorCasilla){
-    QGraphicsRectItem* rItem = tableroWidgets[xPos][yPos];
-    switch (valorCasilla) {
-        case 0:
             rItem->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
-            break;
-        case 1:
-            agregarAVector(rItem, Qt::darkCyan, &obstaculosWidgets);
-            break;
-        case 2:
-            agregarAVector(rItem, Qt::darkGreen, &obstaculosWidgets);
-            break;
-        case 3:
-            agregarAVector(rItem, Qt::darkMagenta, &obstaculosWidgets);
-            break;
-        case 4:
-            agregarAVector(rItem, Qt::lightGray, &rutaWidgets);
-            break;
-        default:
-            break;
+        }
     }
 }
 
@@ -100,8 +78,8 @@ void MainWindow::posicionarObstaculos(string obstaculos){
     for(int indice = 0; indice < vectorObstaculos.size(); indice++){
         int xPos = stoi(vectorObstaculos[indice].substr(0,1));
         int yPos = stoi(vectorObstaculos[indice].substr(1,1));
-        int tipoObstaculo = stoi(vectorObstaculos[indice].substr(2,1));
-        pintarCasilla(xPos, yPos, tipoObstaculo);
+        string tipoObstaculo = vectorObstaculos[indice].substr(2,1).c_str();
+        colocarObstaculo(tipoObstaculo, xPos, yPos);
     }
 }
 
@@ -112,7 +90,9 @@ void MainWindow::mostrarRuta(string ruta){
     for(int indice = 0; indice < cantidadElementos; indice++){
         int xPos = stoi(vectorRuta[indice].substr(0,1));
         int yPos = stoi(vectorRuta[indice].substr(1,1));
-        pintarCasilla(xPos, yPos, 4);
+        QGraphicsRectItem* rItem = tableroWidgets[xPos][yPos];
+        rItem->setBrush(QBrush(Qt::lightGray, Qt::SolidPattern));
+        rutaWidgets.push_back(rItem);
     }
 }
 
@@ -124,23 +104,43 @@ void MainWindow::eliminarCasillas(vector<QGraphicsRectItem*> vectorWidgets){
     vectorWidgets.clear();
 }
 
-void MainWindow::ColocarObstaculo(char id, int fila, int columna)
+void MainWindow::colocarObstaculo(string id, int fila, int columna)
 {
-    int borde=12;
-    QString  S=":/image/image/";
-    S+=id;
-    S+=".png";
-    qDebug()<<S;
+    QString path=":/image/image/";
+    path+=QString::fromStdString(id);
+    path+=".png";
+    qDebug()<<path;
 
-    QLabel* L1=new QLabel(this);
-    QPixmap P1(S);
-    L1->setGeometry(borde+columna*68,borde+fila*68,65,65);
-    L1->setPixmap(P1);
+    QGraphicsRectItem* casillaObstaculo = tableroWidgets[fila][columna];
+    QBrush myBrush;
+    myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+    casillaObstaculo->setBrush(myBrush);
+    obstaculosWidgets.push_back(casillaObstaculo);
+
+    int rango = (id == "1") ? 1:2;
+    crearZonaObstaculo(fila, columna, rango);
 }
 
+void MainWindow::crearZonaObstaculo(int fila, int columna, int rango){
+    qDebug()<<QString::number(rango);
+    int zona = (rango == 1) ? 3:5;
+    QRectF rect(0,0,CASILLA*zona,CASILLA*zona);
+    QGraphicsRectItem* rItem = new QGraphicsRectItem(rect);
+    scene->addItem(rItem);
+    QPen pen(Qt::yellow);
+    pen.setWidth(3);
+    rItem->setPen(pen);
+    rItem->setPos((columna-rango)*CASILLA, (fila-rango)*CASILLA);
+    zonaWidgets.push_back(rItem);
+}
 
-//QString imagePath = QCoreApplication::applicationDirPath() + QString::fromStdString("/direccion/"+nombre+".png");
-//myBrush.setTextureImage(QImage(imagePath));
+void MainWindow::eliminarZonaObstaculos(){
+    for(int i = 0; i < zonaWidgets.size(); i++){
+        QGraphicsRectItem* zona = zonaWidgets[i];
+        scene->removeItem(zona);
+        delete zona;
+    }zonaWidgets.clear();
+}
 
 MainWindow::~MainWindow()
 {
