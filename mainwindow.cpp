@@ -15,23 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     inicializarScene();
     inicializarView();
     generarTablero();
-    Socket  *socket= &Socket::getInstance();
-    string json = socket->escuchar(8081);
-    string obstaculos;
-    string ruta;
-    int g1[9];
-    int g2[9];
-    bool finalizacion;
-    int avanceGenetico;
-    TraductorCliente *traductor = new TraductorCliente();
-    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico, &ruta);
-    posicionarObstaculos(obstaculos);
-    mostrarRuta(ruta);
-    texto->setText(QString::fromStdString(json));
-    //socket->enviar("holi:3",8080,"192.168.100.18");
-    //string obstaculos = "111-572-933";
-    //string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
-    //eliminarCasillas(obstaculosWidgets);
 }
 
 void MainWindow::inicializarScene(){
