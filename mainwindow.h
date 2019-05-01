@@ -14,6 +14,7 @@
 #include <boost/algorithm/string.hpp>
 #include <QLabel>
 #include <QPixmap>
+#include <QPushButton>
 #include "Socket.h"
 #include "traductorcliente.h"
 #include <QString>
@@ -28,11 +29,11 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
+    void inicializarFrame();
     void inicializarScene();
     void inicializarView();
     void generarTablero();
     void pintarCasilla(int xPos, int yPos, int valorCasilla);
-    void agregarAVector(QGraphicsRectItem* rItem, Qt::GlobalColor color, std::vector<QGraphicsRectItem*>* vectorWidgets);
     void posicionarObstaculos(std::string obstaculos);
     void mostrarRuta(std::string ruta);
     void eliminarCasillas(std::vector<QGraphicsRectItem*> vectorWidgets);
@@ -40,6 +41,10 @@ public:
     void crearZonaObstaculo(int fila, int columna, int rango);
     void eliminarZonaObstaculos();
     ~MainWindow();
+
+private slots:
+    void generarSigIteracion();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* scene;
@@ -51,6 +56,7 @@ private:
     std::vector<QGraphicsRectItem*> obstaculosWidgets;
     std::vector<QGraphicsRectItem*> zonaWidgets;
     QGraphicsRectItem* tableroWidgets[10][10];
+    QPushButton* botonSigIteracion;
 };
 
 #endif // MAINWINDOW_H

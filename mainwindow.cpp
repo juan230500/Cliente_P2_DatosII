@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("GLADIADORES");
+    inicializarFrame();
     inicializarScene();
     inicializarView();
     generarTablero();
@@ -24,9 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    eliminarZonaObstaculos();
 }
 
-void MainWindow::inicializarScene(){
-    this->setWindowTitle("GLADIADORES");
-
+void MainWindow::inicializarFrame(){
     QLabel* L1=new QLabel(this);
     QPixmap P1(":/image/image/Fondo1.png");
     L1->resize(1200,700);
@@ -34,15 +34,19 @@ void MainWindow::inicializarScene(){
 
     frame=new QFrame(this);
     frame->setGeometry(0,0,700,700);
-
     texto=new QLabel(this);
-    texto->setGeometry(750,50,400,600);
+    texto->setGeometry(750,50,400,500);
     texto->setStyleSheet("QLabel { background-color : white; color : blue; }");
     texto->setText("What ever text");
+    botonSigIteracion = new QPushButton("Siguiente Iteracion", this);
+    connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (generarSigIteracion()));
+    botonSigIteracion->setGeometry(QRect(QPoint(870, 600), QSize(150, 50)));
+}
 
+void MainWindow::inicializarScene(){
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,0,0);
-    scene->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
+    scene->setBackgroundBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
 }
 
 void MainWindow::inicializarView(){
@@ -55,8 +59,8 @@ void MainWindow::inicializarView(){
 }
 
 void MainWindow::generarTablero(){
-    for(int i = 0; i < 10; i++){
-        for(int j = 0; j < 10; j++){
+    for(int i = 0; i < DIMENSION; i++){
+        for(int j = 0; j < DIMENSION; j++){
             QRectF rect(0,0,CASILLA,CASILLA);
             QGraphicsRectItem* rItem = new QGraphicsRectItem(rect);
             scene->addItem(rItem);
@@ -65,11 +69,6 @@ void MainWindow::generarTablero(){
             rItem->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
         }
     }
-}
-
-void MainWindow::agregarAVector(QGraphicsRectItem* rItem, Qt::GlobalColor color, vector<QGraphicsRectItem*>* vectorWidgets){
-    rItem->setBrush(QBrush(color, Qt::SolidPattern));
-    vectorWidgets->push_back(rItem);
 }
 
 void MainWindow::posicionarObstaculos(string obstaculos){
@@ -106,19 +105,14 @@ void MainWindow::eliminarCasillas(vector<QGraphicsRectItem*> vectorWidgets){
 
 void MainWindow::colocarObstaculo(string id, int fila, int columna)
 {
-    QString path=":/image/image/";
-    path+=QString::fromStdString(id);
-    path+=".png";
+    QString path=":/image/image/" + QString::fromStdString(id) + ".png";
     qDebug()<<path;
-
     QGraphicsRectItem* casillaObstaculo = tableroWidgets[fila][columna];
     QBrush myBrush;
     myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
     casillaObstaculo->setBrush(myBrush);
     obstaculosWidgets.push_back(casillaObstaculo);
-
-    int rango = (id == "1") ? 1:2;
-    crearZonaObstaculo(fila, columna, rango);
+    crearZonaObstaculo(fila, columna, (id == "1") ? 1:2);
 }
 
 void MainWindow::crearZonaObstaculo(int fila, int columna, int rango){
@@ -142,7 +136,16 @@ void MainWindow::eliminarZonaObstaculos(){
     }zonaWidgets.clear();
 }
 
-MainWindow::~MainWindow()
-{
+void MainWindow::generarSigIteracion(){
+    eliminarCasillas(obstaculosWidgets);
+    eliminarCasillas(rutaWidgets);
+    eliminarZonaObstaculos();
+    string obstaculos = "551-572-343";
+    posicionarObstaculos(obstaculos);
+    string ruta = "00-10-20-30-40-50-60-70-80-90-91-92-93-94-95-96-97-98-99";
+    mostrarRuta(ruta);
+}
+
+MainWindow::~MainWindow(){
     delete ui;
 }
