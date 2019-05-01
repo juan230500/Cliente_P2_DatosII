@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     inicializarScene();
     inicializarView();
     generarTablero();
+    contIteraciones=0;
 
 //    string obstaculos = "111-572-733";
 //    posicionarObstaculos(obstaculos);
@@ -47,7 +48,7 @@ void MainWindow::inicializarFrame(){
     textoB->setText("What ever text");
 
     botonSigIteracion = new QPushButton("Siguiente Iteracion", this);
-    connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (generarSigIteracion()));
+    connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (sigIteracion()));
     botonSigIteracion->setGeometry(750, 600,150, 50);
 
     botonStats = new QPushButton("Estadísticas", this);
@@ -56,11 +57,11 @@ void MainWindow::inicializarFrame(){
 
     Muerto1=new QLabel(this);
     QPixmap Pi1(":/image/image/F1.png");
-    Muerto1->setGeometry(0,0,CASILLA,CASILLA);
+    Muerto1->setGeometry(700,700,CASILLA,CASILLA);
     Muerto1->setPixmap(Pi1.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
     Muerto2=new QLabel(this);
     QPixmap Pi2(":/image/image/F2.png");
-    Muerto2->setGeometry(0,0,CASILLA,CASILLA);
+    Muerto2->setGeometry(700,700,CASILLA,CASILLA);
     Muerto2->setPixmap(Pi2.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
 }
 
@@ -188,7 +189,17 @@ void MainWindow::eliminarZonaObstaculos(){
     zonaWidgets.clear();
 }
 
-void MainWindow::generarSigIteracion(){
+void MainWindow::sigIteracion(){
+    contIteraciones++;
+    if(contIteraciones == 3){
+        cicloParcial();
+    }else{
+        cicloCompleto();
+    }
+
+}
+
+void MainWindow::cicloCompleto(){
     eliminarCasillas(obstaculosWidgets);
     eliminarCasillas(rutaWidgets);
     eliminarZonaObstaculos();
@@ -198,7 +209,7 @@ void MainWindow::generarSigIteracion(){
         }
     }
     Socket  *socket= &Socket::getInstance();
-    socket->enviar("", 8082, "192.168.100.7");
+    socket->enviar("", 8082, "192.168.100.24");
     string json = socket->escuchar(8081);
     string obstaculos;
     string rutaPathfinding;
@@ -210,12 +221,30 @@ void MainWindow::generarSigIteracion(){
     string muerte1;
     string muerte2;
     TraductorCliente *traductor = new TraductorCliente();
-    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico, &rutaPathfinding, &rutaBacktracking);
+    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico, &rutaPathfinding, &rutaBacktracking, &muerte1, &muerte2);
+    if(muerte1==""){
+        qDebug()<<"GANA GLADIADOR 1";
+        return;
+    }else if(muerte2==""){
+        qDebug()<<"GANA GLADIADOR 2";
+        return;
+    }
     posicionarObstaculos(obstaculos);
     mostrarRuta(rutaPathfinding, 0);
     mostrarRuta(rutaBacktracking, 1);
+    Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 0);
+    Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 1);
     //texto->setWordWrap(true);
     //texto->setText(QString::fromStdString(json));
+}
+
+void MainWindow::cicloParcial(){
+    while(true){
+        cicloCompleto();
+        QTime dieTime= QTime::currentTime().addSecs(2);
+            while (QTime::currentTime() < dieTime)
+                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 }
 
 MainWindow::~MainWindow(){

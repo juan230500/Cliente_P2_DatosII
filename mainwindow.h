@@ -15,11 +15,13 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QPushButton>
-#include "Socket.h"
-#include "traductorcliente.h"
 #include <QString>
 #include <QColor>
+#include <QTime>
 #include "stats.h"
+#include "Socket.h"
+#include "traductorcliente.h"
+
 
 #define DIMENSION 10
 
@@ -44,11 +46,13 @@ public:
     void colocarObstaculo(string id, int fila, int columna);
     void crearZonaObstaculo(int fila, int columna, int rango);
     void eliminarZonaObstaculos();
+    void cicloCompleto();
+    void cicloParcial();
     ~MainWindow();
     QLabel* texto;
 
 private slots:
-    void generarSigIteracion();
+    void sigIteracion();
     void generarEstadisticas();
 
 
@@ -69,6 +73,7 @@ private:
     QPushButton* botonStats;
     QLabel* Muerto1;
     QLabel* Muerto2;
+    int contIteraciones;
 };
 
 #endif // MAINWINDOW_H

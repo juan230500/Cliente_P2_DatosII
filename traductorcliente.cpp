@@ -1,12 +1,12 @@
 #include "traductorcliente.h"
 #include <iostream>
 using namespace std;
-traductorCliente::traductorCliente()
+TraductorCliente::TraductorCliente()
 {
 
 }
 
-string traductorCliente::SerializarInformacionIteracion3(string obstaculos1, string rutaA, string rutaB, bool finalizacion)
+string TraductorCliente::SerializarInformacionIteracion3(string obstaculos1, string rutaA, string rutaB, bool finalizacion)
 {
     const char* json = "{\"AvanceGenetico\":0,"
                        "\"finalizacion\":true,"
@@ -34,7 +34,7 @@ string traductorCliente::SerializarInformacionIteracion3(string obstaculos1, str
     return buffer.GetString();
 }
 
-void traductorCliente::DeserializarInformacionIteracion3(string json,string *obstaculos1, string *rutaA, string *rutaB, bool *finalizacion)
+void TraductorCliente::DeserializarInformacionIteracion3(string json,string *obstaculos1, string *rutaA, string *rutaB, bool *finalizacion)
 {
     Document d;
     d.Parse(json.c_str());
@@ -45,7 +45,9 @@ void traductorCliente::DeserializarInformacionIteracion3(string json,string *obs
     *obstaculos1=d["obstaculos"].GetString();
     *finalizacion=d["finalizacion"].GetBool();
 }
-void traductorCliente::DeserializarInfoDeSimulacion(string json,string *obstaculos,int atributosGladiador1[9],int atributosGladiador2[9],bool *finalizacion,int *AvanceGenetico,string *rutaA,string *rutaB)
+void TraductorCliente::DeserializarInfoDeSimulacion(string json,string *obstaculos,int atributosGladiador1[9],
+                                                        int atributosGladiador2[9],bool *finalizacion,int *AvanceGenetico,
+                                                            string *rutaA,string *rutaB,string *muerte1,string *muerte2)
 {
     Document d;
     d.Parse(json.c_str());
@@ -58,15 +60,19 @@ void traductorCliente::DeserializarInfoDeSimulacion(string json,string *obstacul
      const char * obstac=d["obstaculos"].GetString();
     *rutaA=d["rutaA"].GetString();
     *rutaB=d["rutaB"].GetString();
+    *muerte1=d["muerte1"].GetString();
+    *muerte2=d["muerte2"].GetString();
     *obstaculos=d["obstaculos"].GetString();
     *finalizacion=d["finalizacion"].GetBool();
     *AvanceGenetico=d["AvanceGenetico"].GetInt();
 }
-string traductorCliente::SerializarInformacion(string obstaculos1 , int atributosGladiador1[9] , int atributosGladiador2[9], string rutaA,string rutaB, bool finalizacion, int AvanceGenetico)
+string TraductorCliente::SerializarInformacion(string obstaculos1 , int atributosGladiador1[9] , int atributosGladiador2[9], string rutaA,string rutaB, bool finalizacion, int AvanceGenetico,string muerte1, string muerte2)
 {
 
     const char* json = "{\"AvanceGenetico\":0,"
                        "\"finalizacion\":true,"
+                       "\"muerte1\":\"abcdefghaaa\","
+                       "\"muerte2\":\"abcdefghaaa\","
                        "\"rutaA\":\"abcdefghaaa\","
                        "\"rutaB\":\"abcdefghaaa\","
                        "\"obstaculos\":\"abcdefghaaa\","
@@ -85,10 +91,14 @@ string traductorCliente::SerializarInformacion(string obstaculos1 , int atributo
         }
         const char * cstr = rutaA.c_str();
         const char * cstr1 = rutaB.c_str();
+        const char * cstr2 = muerte1.c_str();
+        const char * cstr3 = muerte2.c_str();
         const char * obstaculos = obstaculos1.c_str();
         d["obstaculos"].SetString((StringRef(obstaculos)));
         d["rutaA"].SetString((StringRef(cstr)));
         d["rutaB"].SetString((StringRef(cstr1)));
+        d["muerte1"].SetString((StringRef(cstr2)));
+        d["muerte2"].SetString((StringRef(cstr3)));
     }
     // cout<<"termine de serializar"<<endl;
     StringBuffer buffer;
