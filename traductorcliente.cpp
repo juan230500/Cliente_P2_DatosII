@@ -1,16 +1,56 @@
 #include "traductorcliente.h"
 #include <iostream>
 using namespace std;
-TraductorCliente::TraductorCliente()
+traductorCliente::traductorCliente()
 {
 
 }
-void TraductorCliente::DeserializarInfoDeSimulacion(string json,string *obstaculos,int atributosGladiador1[9],int atributosGladiador2[9],bool *finalizacion,int *AvanceGenetico,string *rutaA,string *rutaB)
+
+string traductorCliente::SerializarInformacionIteracion3(string obstaculos1, string rutaA, string rutaB, bool finalizacion)
+{
+    const char* json = "{\"AvanceGenetico\":0,"
+                       "\"finalizacion\":true,"
+                       "\"rutaA\":\"abcdefghaaa\","
+                       "\"rutaB\":\"abcdefghaaa\","
+                       "\"obstaculos\":\"abcdefghaaa\","
+                       "\"atributosGladiador1\":[0,2,0,0,0,0,0,0,0,0],"
+                       "\"atributosGladiador2\":[0,2,0,0,0,0,0,0,0,0],"
+                       "\"ganador\":\"\"}";
+    Document d;
+    d.Parse(json);
+    d["finalizacion"].SetBool(finalizacion);
+    if (!finalizacion) {
+        string stmp;
+        const char * cstr = rutaA.c_str();
+        const char * cstr1 = rutaB.c_str();
+        const char * obstaculos = obstaculos1.c_str();
+        d["obstaculos"].SetString((StringRef(obstaculos)));
+        d["rutaA"].SetString((StringRef(cstr)));
+        d["rutaB"].SetString((StringRef(cstr1)));
+    }
+    StringBuffer buffer;
+    Writer<StringBuffer> writer(buffer);
+    d.Accept(writer);
+    return buffer.GetString();
+}
+
+void traductorCliente::DeserializarInformacionIteracion3(string json,string *obstaculos1, string *rutaA, string *rutaB, bool *finalizacion)
+{
+    Document d;
+    d.Parse(json.c_str());
+     const char * cstr=d["rutaA"].GetString();
+     const char * obstac=d["obstaculos"].GetString();
+    *rutaA=d["rutaA"].GetString();
+    *rutaB=d["rutaB"].GetString();
+    *obstaculos1=d["obstaculos"].GetString();
+    *finalizacion=d["finalizacion"].GetBool();
+}
+void traductorCliente::DeserializarInfoDeSimulacion(string json,string *obstaculos,int atributosGladiador1[9],int atributosGladiador2[9],bool *finalizacion,int *AvanceGenetico,string *rutaA,string *rutaB)
 {
     Document d;
     d.Parse(json.c_str());
    // cout << "ya parsee"<<endl;
-    for (int i=0;i<9;i++){
+    for (int i=0;i<10;i++){
         atributosGladiador1[i]= d["atributosGladiador1"].GetArray()[i].GetInt();
          atributosGladiador2[i]=d["atributosGladiador2"].GetArray()[i].GetInt();
     }
@@ -22,7 +62,7 @@ void TraductorCliente::DeserializarInfoDeSimulacion(string json,string *obstacul
     *finalizacion=d["finalizacion"].GetBool();
     *AvanceGenetico=d["AvanceGenetico"].GetInt();
 }
-string TraductorCliente::SerializarInformacion(string obstaculos1 , int atributosGladiador1[9] , int atributosGladiador2[9], string rutaA,string rutaB, bool finalizacion, int AvanceGenetico)
+string traductorCliente::SerializarInformacion(string obstaculos1 , int atributosGladiador1[9] , int atributosGladiador2[9], string rutaA,string rutaB, bool finalizacion, int AvanceGenetico)
 {
 
     const char* json = "{\"AvanceGenetico\":0,"
@@ -30,8 +70,8 @@ string TraductorCliente::SerializarInformacion(string obstaculos1 , int atributo
                        "\"rutaA\":\"abcdefghaaa\","
                        "\"rutaB\":\"abcdefghaaa\","
                        "\"obstaculos\":\"abcdefghaaa\","
-                       "\"atributosGladiador1\":[0,2,0,0,0,0,0,0,0],"
-                       "\"atributosGladiador2\":[0,2,0,0,0,0,0,0,0],"
+                       "\"atributosGladiador1\":[0,2,0,0,0,0,0,0,0,0],"
+                       "\"atributosGladiador2\":[0,2,0,0,0,0,0,0,0,0],"
                        "\"ganador\":\"\"}";
     Document d;
     d.Parse(json);
@@ -39,7 +79,7 @@ string TraductorCliente::SerializarInformacion(string obstaculos1 , int atributo
     d["finalizacion"].SetBool(finalizacion);
     if (!finalizacion) {
         string stmp;
-        for(int i=0;i<9;i++){
+        for(int i=0;i<10;i++){
             d["atributosGladiador1"].GetArray()[i]=atributosGladiador1[i];
             d["atributosGladiador2"].GetArray()[i]=atributosGladiador2[i];
         }
