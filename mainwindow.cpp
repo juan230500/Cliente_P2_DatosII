@@ -35,10 +35,15 @@ void MainWindow::inicializarFrame(){
     frame=new QFrame(this);
     frame->setGeometry(0,0,700,700);
 
-    texto=new QLabel(this);
-    QPixmap P2(":/image/image/labelBackground.png");
-    texto->setGeometry(750,50,400,500);
-    texto->setPixmap(P2);
+    textoA=new QLabel(this);
+    textoA->setGeometry(750,50,200,500);
+    textoA->setStyleSheet("QLabel { background-color : white; color : blue; }");
+    textoA->setText("What ever text");
+
+    textoB=new QLabel(this);
+    textoB->setGeometry(975,50,200,500);
+    textoB->setStyleSheet("QLabel { background-color : white; color : blue; }");
+    textoB->setText("What ever text");
 
     botonSigIteracion = new QPushButton("Siguiente Iteracion", this);
     connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (generarSigIteracion()));

@@ -59,6 +59,8 @@ private:
     QGraphicsView* view;
     QVBoxLayout* layoutVertical;
     QFrame* frame;
+    QLabel* textoA;
+    QLabel* textoB;
     std::vector<QGraphicsRectItem*> rutaWidgets;
     std::vector<QGraphicsRectItem*> obstaculosWidgets;
     std::vector<QGraphicsRectItem*> zonaWidgets;
