@@ -150,6 +150,14 @@ void MainWindow::mostrarRuta(string ruta, bool A){
     for(int indice = 0; indice < cantidadElementos; indice++){
         int xPos = stoi(vectorRuta[indice].substr(0,1));
         int yPos = stoi(vectorRuta[indice].substr(1,1));
+        if (indice==0){
+            if (A){
+                DibujarInicio(xPos,yPos,0);
+            }
+            else{
+                DibujarInicio(xPos,yPos,1);
+            }
+        }
         QGraphicsRectItem* rItem = tableroWidgets[xPos][yPos];
 
         if (Pintadas[xPos][yPos]) {
@@ -219,8 +227,6 @@ void MainWindow::sigIteracion(){
 }
 
 void MainWindow::cicloCompleto(){
-    DibujarInicio(1,4,0);
-    return;
     eliminarCasillas(obstaculosWidgets);
     eliminarCasillas(rutaWidgets);
     eliminarZonaObstaculos();
