@@ -20,6 +20,8 @@
 #include <QString>
 #include <QColor>
 
+#define DIMENSION 10
+
 namespace Ui {
 class MainWindow;
 }
@@ -47,8 +49,7 @@ private slots:
     void generarSigIteracion();
 
 private:
-    bool Pintadas[10][10]={0};
-
+    bool Pintadas[DIMENSION][DIMENSION]={0};
     Ui::MainWindow *ui;
     QGraphicsScene* scene;
     QGraphicsView* view;
@@ -58,7 +59,7 @@ private:
     std::vector<QGraphicsRectItem*> rutaWidgets;
     std::vector<QGraphicsRectItem*> obstaculosWidgets;
     std::vector<QGraphicsRectItem*> zonaWidgets;
-    QGraphicsRectItem* tableroWidgets[10][10];
+    QGraphicsRectItem* tableroWidgets[DIMENSION][DIMENSION];
     QPushButton* botonSigIteracion;
 };
 

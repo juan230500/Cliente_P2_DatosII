@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include "qdebug.h"
 
-#define DIMENSION 10
 #define CASILLA 68
 #define FONDO "#222831"
 #define COLOR_RUTA_A "#ff2e63"
@@ -23,12 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
     generarTablero();
     string obstaculos = "111-572-733";
     posicionarObstaculos(obstaculos);
-    string ruta = "00-01-01-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
+    string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
     mostrarRuta(ruta, 1);
-
-//    eliminarCasillas(obstaculosWidgets);
-//    eliminarCasillas(rutaWidgets);
-//    eliminarZonaObstaculos();
 }
 
 void MainWindow::inicializarFrame(){
@@ -157,10 +152,15 @@ void MainWindow::generarSigIteracion(){
     eliminarCasillas(obstaculosWidgets);
     eliminarCasillas(rutaWidgets);
     eliminarZonaObstaculos();
+    for(int i = 0; i < DIMENSION; i++){
+        for(int j = 0; j < DIMENSION; j++){
+            Pintadas[i][j] = 0;
+        }
+    }
     string obstaculos = "551-572-343";
     posicionarObstaculos(obstaculos);
     string ruta = "00-10-20-30-40-50-60-70-80-90-91-92-93-94-95-96-97-98-99";
-    mostrarRuta(ruta);
+    mostrarRuta(ruta,0);
 }
 
 MainWindow::~MainWindow(){
