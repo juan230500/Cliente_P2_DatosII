@@ -42,7 +42,11 @@ void MainWindow::inicializarFrame(){
 
     botonSigIteracion = new QPushButton("Siguiente Iteracion", this);
     connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (generarSigIteracion()));
-    botonSigIteracion->setGeometry(870,600,150,50);
+    botonSigIteracion->setGeometry(750, 600,150, 50);
+
+    botonStats = new QPushButton("Estadísticas", this);
+    connect(botonStats, SIGNAL (clicked()),this, SLOT (generarEstadisticas()));
+    botonStats->setGeometry(950, 600, 150, 50);
 }
 
 void MainWindow::inicializarScene(){
@@ -71,6 +75,32 @@ void MainWindow::generarTablero(){
             rItem->setBrush(QBrush(QColor(FONDO), Qt::SolidPattern));
         }
     }
+}
+
+void MainWindow::Muerte(int fila, int columna, bool A)
+{
+    QLabel* L;
+    QString path;
+    if (A) {
+        Muerto1=new QLabel(this);
+        L=Muerto1;
+        path=":/image/image/F1.png";
+    }
+    else  {
+        Muerto2=new QLabel(this);
+        L=Muerto2;
+        path=":/image/image/F2.png";
+    }
+    QPixmap P1(path);
+    L->setGeometry(10+68*columna,10+68*fila,CASILLA,CASILLA);
+    L->setPixmap(P1.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+}
+
+void MainWindow::generarEstadisticas()
+{
+    Stats* nw=new Stats(this);
+    nw->show();
+    hide();
 }
 
 void MainWindow::posicionarObstaculos(string obstaculos){
@@ -122,7 +152,6 @@ void MainWindow::eliminarCasillas(vector<QGraphicsRectItem*> vectorWidgets){
 void MainWindow::colocarObstaculo(string id, int fila, int columna)
 {
     QString path=":/image/image/" + QString::fromStdString(id) + ".png";
-    qDebug()<<path;
     QGraphicsRectItem* casillaObstaculo = tableroWidgets[fila][columna];
     QBrush myBrush;
     myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
