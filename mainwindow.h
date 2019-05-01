@@ -14,6 +14,8 @@
 #include <boost/algorithm/string.hpp>
 #include <QLabel>
 #include <QPixmap>
+#include "Socket.h"
+#include "traductorcliente.h"
 #include <QString>
 
 namespace Ui {
@@ -41,7 +43,8 @@ private:
     QGraphicsScene* scene;
     QGraphicsView* view;
     QVBoxLayout* layoutVertical;
-    QFrame* Frame;
+    QFrame* frame;
+    QLabel* texto;
     std::vector<QGraphicsRectItem*> rutaWidgets;
     std::vector<QGraphicsRectItem*> obstaculosWidgets;
     QGraphicsRectItem* tableroWidgets[10][10];

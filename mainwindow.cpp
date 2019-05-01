@@ -31,13 +31,13 @@ void MainWindow::inicializarScene(){
     L1->resize(1200,700);
     L1->setPixmap(P1);
 
-    Frame=new QFrame(this);
-    Frame->setGeometry(0,0,700,700);
+    frame=new QFrame(this);
+    frame->setGeometry(0,0,700,700);
 
-    QLabel* L2=new QLabel(this);
-    L2->setGeometry(750,50,400,600);
-    L2->setStyleSheet("QLabel { background-color : white; color : blue; }");
-    L2->setText("What ever text");
+    texto=new QLabel(this);
+    texto->setGeometry(750,50,400,600);
+    texto->setStyleSheet("QLabel { background-color : white; color : blue; }");
+    texto->setText("What ever text");
 
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,0,0);
@@ -49,7 +49,7 @@ void MainWindow::inicializarView(){
     view->setInteractive(true);
     view->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     view->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
-    layoutVertical = new QVBoxLayout(Frame);
+    layoutVertical = new QVBoxLayout(frame);
     layoutVertical->addWidget(view);
 }
 

@@ -12,17 +12,26 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-//    QPixmap P1(":/image/image/Tablero.png");
-//    QPixmap P2(":/image/image/Gladiador.jpg");
+    string obstaculos = "221-572-733";
+    string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
+    w.mostrarRuta(ruta);
+    w.posicionarObstaculos(obstaculos);
+//    w.eliminarCasillas(obstaculosWidgets);
 
-//    QLabel* L=new QLabel(&w);
-//    L->resize(1200,700);
-//    L->setPixmap(P1);
-
-//    QLabel* L2=new QLabel(&w);
-//    L2->resize(70,70);
-//    L2->setPixmap(P2);
-//    colocar(L2,1,2);
+//    Socket  *socket= &Socket::getInstance();
+//    string json = socket->escuchar(8081);
+//    string obstaculos;
+//    string ruta;
+//    int g1[9];
+//    int g2[9];
+//    bool finalizacion;
+//    int avanceGenetico;
+//    TraductorCliente *traductor = new TraductorCliente();
+//    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico, &ruta);
+//    posicionarObstaculos(obstaculos);
+//    mostrarRuta(ruta);
+//    texto->setText(QString::fromStdString(json));
+////    socket->enviar("holi:3",8080,"192.168.100.18");
 
     w.show();
 
