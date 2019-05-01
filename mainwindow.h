@@ -37,6 +37,7 @@ public:
     void inicializarScene();
     void inicializarView();
     void generarTablero();
+    void Muerte(int fila, int columna, bool A);
     void pintarCasilla(int xPos, int yPos, int valorCasilla);
     void posicionarObstaculos(std::string obstaculos);
     void mostrarRuta(std::string ruta, bool A);

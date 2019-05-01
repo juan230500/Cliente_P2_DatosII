@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     posicionarObstaculos(obstaculos);
     string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
     mostrarRuta(ruta, 1);
+    Muerte(1,3,0);
 }
 
 void MainWindow::inicializarFrame(){
@@ -73,6 +74,17 @@ void MainWindow::generarTablero(){
             rItem->setBrush(QBrush(QColor(FONDO), Qt::SolidPattern));
         }
     }
+}
+
+void MainWindow::Muerte(int fila, int columna, bool A)
+{
+    QString path;
+    if (A)  path=":/image/image/F1.png";
+    else  path=":/image/image/F2.png";
+    QGraphicsRectItem* casillaObstaculo = tableroWidgets[fila][columna];
+    QBrush myBrush;
+    myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+    casillaObstaculo->setBrush(myBrush);
 }
 
 void MainWindow::generarEstadisticas()
