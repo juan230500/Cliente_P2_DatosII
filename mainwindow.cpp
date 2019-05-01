@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     inicializarScene();
     inicializarView();
     generarTablero();
+
 //    string obstaculos = "111-572-733";
 //    posicionarObstaculos(obstaculos);
 //    string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
@@ -52,6 +53,15 @@ void MainWindow::inicializarFrame(){
     botonStats = new QPushButton("Estadísticas", this);
     connect(botonStats, SIGNAL (clicked()),this, SLOT (generarEstadisticas()));
     botonStats->setGeometry(950, 600, 150, 50);
+
+    Muerto1=new QLabel(this);
+    QPixmap Pi1(":/image/image/F1.png");
+    Muerto1->setGeometry(0,0,CASILLA,CASILLA);
+    Muerto1->setPixmap(Pi1.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+    Muerto2=new QLabel(this);
+    QPixmap Pi2(":/image/image/F2.png");
+    Muerto2->setGeometry(0,0,CASILLA,CASILLA);
+    Muerto2->setPixmap(Pi2.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
 }
 
 void MainWindow::inicializarScene(){
@@ -84,21 +94,13 @@ void MainWindow::generarTablero(){
 
 void MainWindow::Muerte(int fila, int columna, bool A)
 {
-    QLabel* L;
-    QString path;
-    if (A) {
-        Muerto1=new QLabel(this);
-        L=Muerto1;
-        path=":/image/image/F1.png";
+    if (A){
+        Muerto1->setGeometry(10+68*columna,10+68*fila,CASILLA,CASILLA);
     }
-    else  {
-        Muerto2=new QLabel(this);
-        L=Muerto2;
-        path=":/image/image/F2.png";
+    else{
+        Muerto2->setGeometry(10+68*columna,10+68*fila,CASILLA,CASILLA);
     }
-    QPixmap P1(path);
-    L->setGeometry(10+68*columna,10+68*fila,CASILLA,CASILLA);
-    L->setPixmap(P1.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+
 }
 
 void MainWindow::generarEstadisticas()
