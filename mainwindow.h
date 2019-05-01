@@ -66,6 +66,8 @@ private:
     QGraphicsRectItem* tableroWidgets[DIMENSION][DIMENSION];
     QPushButton* botonSigIteracion;
     QPushButton* botonStats;
+    QLabel* Muerto1;
+    QLabel* Muerto2;
 };
 
 #endif // MAINWINDOW_H
