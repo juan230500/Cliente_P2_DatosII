@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = Cliente_P2
 TEMPLATE = app
@@ -29,13 +29,15 @@ SOURCES += \
         mainwindow.cpp \
         Socket.cpp \
     traductorcliente.cpp \
-    stats.cpp
+    stats.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
         mainwindow.h \
         Socket.h \
     traductorcliente.h \
-    stats.h
+    stats.h \
+    qcustomplot.h
 
 FORMS += \
         mainwindow.ui \
