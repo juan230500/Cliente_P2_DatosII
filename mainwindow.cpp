@@ -118,7 +118,6 @@ void MainWindow::eliminarCasillas(vector<QGraphicsRectItem*> vectorWidgets){
 void MainWindow::colocarObstaculo(string id, int fila, int columna)
 {
     QString path=":/image/image/" + QString::fromStdString(id) + ".png";
-    qDebug()<<path;
     QGraphicsRectItem* casillaObstaculo = tableroWidgets[fila][columna];
     QBrush myBrush;
     myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
