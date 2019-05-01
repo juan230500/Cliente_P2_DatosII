@@ -28,15 +28,18 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         Socket.cpp \
-    traductorcliente.cpp
+    traductorcliente.cpp \
+    stats.cpp
 
 HEADERS += \
         mainwindow.h \
         Socket.h \
-    traductorcliente.h
+    traductorcliente.h \
+    stats.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    stats.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

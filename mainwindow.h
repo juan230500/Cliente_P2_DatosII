@@ -19,6 +19,7 @@
 #include "traductorcliente.h"
 #include <QString>
 #include <QColor>
+#include "stats.h"
 
 #define DIMENSION 10
 
@@ -47,6 +48,8 @@ public:
 
 private slots:
     void generarSigIteracion();
+    void generarEstadisticas();
+
 
 private:
     bool Pintadas[DIMENSION][DIMENSION]={0};
@@ -61,6 +64,7 @@ private:
     std::vector<QGraphicsRectItem*> zonaWidgets;
     QGraphicsRectItem* tableroWidgets[DIMENSION][DIMENSION];
     QPushButton* botonSigIteracion;
+    QPushButton* botonStats;
 };
 
 #endif // MAINWINDOW_H

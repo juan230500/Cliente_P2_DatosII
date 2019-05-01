@@ -40,7 +40,11 @@ void MainWindow::inicializarFrame(){
     texto->setText("What ever text");
     botonSigIteracion = new QPushButton("Siguiente Iteracion", this);
     connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (generarSigIteracion()));
-    botonSigIteracion->setGeometry(QRect(QPoint(870, 600), QSize(150, 50)));
+    botonSigIteracion->setGeometry(750, 600,150, 50);
+
+    botonStats = new QPushButton("Estadísticas", this);
+    connect(botonStats, SIGNAL (clicked()),this, SLOT (generarEstadisticas()));
+    botonStats->setGeometry(950, 600, 150, 50);
 }
 
 void MainWindow::inicializarScene(){
@@ -69,6 +73,13 @@ void MainWindow::generarTablero(){
             rItem->setBrush(QBrush(QColor(FONDO), Qt::SolidPattern));
         }
     }
+}
+
+void MainWindow::generarEstadisticas()
+{
+    Stats* nw=new Stats(this);
+    nw->show();
+    hide();
 }
 
 void MainWindow::posicionarObstaculos(string obstaculos){
