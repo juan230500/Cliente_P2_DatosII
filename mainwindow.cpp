@@ -4,9 +4,13 @@
 
 #define DIMENSION 10
 #define CASILLA 68
+#define FONDO "#222831"
+#define COLOR_RUTA_A "#ff2e63"
+#define COLOR_RUTA_B "#08d9d6"
+#define COLOR_RUTA_C "#6a2c70"
+
 
 using namespace std;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -17,10 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
     generarTablero();
     string obstaculos = "111-572-733";
     posicionarObstaculos(obstaculos);
-    string ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
-    mostrarRuta(ruta, 0);
-    ruta = "00-01-02-03-04-14-24-34-44-54-64-65-66-67-68-69-78-89-98";
+    string ruta = "00-01-01-03-04-14-24-34-44-54-64-65-66-67-68-69-79-89-99";
     mostrarRuta(ruta, 1);
+
 //    eliminarCasillas(obstaculosWidgets);
 //    eliminarCasillas(rutaWidgets);
 //    eliminarZonaObstaculos();
@@ -44,7 +47,7 @@ void MainWindow::inicializarScene(){
 
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,0,0);
-    scene->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
+    scene->setBackgroundBrush(QBrush(QColor(FONDO), Qt::SolidPattern));
 }
 
 void MainWindow::inicializarView(){
@@ -64,7 +67,7 @@ void MainWindow::generarTablero(){
             scene->addItem(rItem);
             tableroWidgets[i][j] = rItem;
             rItem->setPos(j*CASILLA, i*CASILLA);
-            rItem->setBrush(QBrush(QColor("#222831"), Qt::SolidPattern));
+            rItem->setBrush(QBrush(QColor(FONDO), Qt::SolidPattern));
         }
     }
 }
@@ -95,15 +98,15 @@ void MainWindow::mostrarRuta(string ruta, bool A){
         QGraphicsRectItem* rItem = tableroWidgets[xPos][yPos];
 
         if (Pintadas[xPos][yPos]) {
-            rItem->setBrush(QBrush(QColor("#6a2c70"), Qt::SolidPattern));
+            rItem->setBrush(QBrush(QColor(COLOR_RUTA_C), Qt::SolidPattern));
         }
         else if(A){
             Pintadas[xPos][yPos]=1;
-            rItem->setBrush(QBrush(QColor("#ff2e63"), Qt::SolidPattern));
+            rItem->setBrush(QBrush(QColor(COLOR_RUTA_A), Qt::SolidPattern));
         }
         else{
             Pintadas[xPos][yPos]=1;
-            rItem->setBrush(QBrush(QColor("#08d9d6"), Qt::SolidPattern));
+            rItem->setBrush(QBrush(QColor(COLOR_RUTA_B), Qt::SolidPattern));
         }
 
         rutaWidgets.push_back(rItem);
@@ -113,7 +116,7 @@ void MainWindow::mostrarRuta(string ruta, bool A){
 void MainWindow::eliminarCasillas(vector<QGraphicsRectItem*> vectorWidgets){
     int cantidadWidgets = vectorWidgets.size();
     for(int indice = 0; indice < cantidadWidgets; indice++){
-        vectorWidgets[indice]->setBrush(QBrush(Qt::darkRed, Qt::SolidPattern));
+        vectorWidgets[indice]->setBrush(QBrush(QColor(FONDO), Qt::SolidPattern));
     }
     vectorWidgets.clear();
 }
@@ -123,7 +126,7 @@ void MainWindow::colocarObstaculo(string id, int fila, int columna)
     QString path=":/image/image/";
     path+=QString::fromStdString(id);
     path+=".png";
-    qDebug()<<path;
+    path="/home/juan/Escritorio/b.png";
 
     QGraphicsRectItem* casillaObstaculo = tableroWidgets[fila][columna];
     QBrush myBrush;
@@ -136,7 +139,6 @@ void MainWindow::colocarObstaculo(string id, int fila, int columna)
 }
 
 void MainWindow::crearZonaObstaculo(int fila, int columna, int rango){
-    qDebug()<<QString::number(rango);
     int zona = (rango == 1) ? 3:5;
     QRectF rect(0,0,CASILLA*zona,CASILLA*zona);
     QGraphicsRectItem* rItem = new QGraphicsRectItem(rect);
@@ -153,7 +155,8 @@ void MainWindow::eliminarZonaObstaculos(){
         QGraphicsRectItem* zona = zonaWidgets[i];
         scene->removeItem(zona);
         delete zona;
-    }zonaWidgets.clear();
+    }
+    zonaWidgets.clear();
 }
 
 MainWindow::~MainWindow()
