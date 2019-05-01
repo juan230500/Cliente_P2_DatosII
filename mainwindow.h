@@ -17,6 +17,7 @@
 #include "Socket.h"
 #include "traductorcliente.h"
 #include <QString>
+#include <QColor>
 
 namespace Ui {
 class MainWindow;
@@ -34,13 +35,15 @@ public:
     void pintarCasilla(int xPos, int yPos, int valorCasilla);
     void agregarAVector(QGraphicsRectItem* rItem, Qt::GlobalColor color, std::vector<QGraphicsRectItem*>* vectorWidgets);
     void posicionarObstaculos(std::string obstaculos);
-    void mostrarRuta(std::string ruta);
+    void mostrarRuta(std::string ruta, bool A);
     void eliminarCasillas(std::vector<QGraphicsRectItem*> vectorWidgets);
     void colocarObstaculo(string id, int fila, int columna);
     void crearZonaObstaculo(int fila, int columna, int rango);
     void eliminarZonaObstaculos();
     ~MainWindow();
 private:
+    bool Pintadas[10][10]={0};
+
     Ui::MainWindow *ui;
     QGraphicsScene* scene;
     QGraphicsView* view;
