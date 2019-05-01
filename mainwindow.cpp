@@ -55,6 +55,15 @@ void MainWindow::inicializarFrame(){
     connect(botonStats, SIGNAL (clicked()),this, SLOT (generarEstadisticas()));
     botonStats->setGeometry(950, 600, 150, 50);
 
+    Gladiador1=new QLabel(this);
+    QPixmap Pg1(":/image/image/Gladiador.jpg");
+    Gladiador1->setGeometry(700,700,CASILLA,CASILLA);
+    Gladiador1->setPixmap(Pg1.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+    Gladiador2=new QLabel(this);
+    QPixmap Pg2(":/image/image/Gladiador.jpg");
+    Gladiador2->setGeometry(700,700,CASILLA,CASILLA);
+    Gladiador2->setPixmap(Pg2.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+
     Muerto1=new QLabel(this);
     QPixmap Pi1(":/image/image/F1.png");
     Muerto1->setGeometry(700,700,CASILLA,CASILLA);
@@ -102,6 +111,16 @@ void MainWindow::Muerte(int fila, int columna, bool A)
         Muerto2->setGeometry(10+68*columna,10+68*fila,CASILLA,CASILLA);
     }
 
+}
+
+void MainWindow::DibujarInicio(int fila, int columna, bool A)
+{
+    if (A){
+        Gladiador1->setGeometry(10+68*columna,10+68*fila,CASILLA,CASILLA);
+    }
+    else{
+        Gladiador2->setGeometry(10+68*columna,10+68*fila,CASILLA,CASILLA);
+    }
 }
 
 void MainWindow::generarEstadisticas()
@@ -200,6 +219,8 @@ void MainWindow::sigIteracion(){
 }
 
 void MainWindow::cicloCompleto(){
+    DibujarInicio(1,4,0);
+    return;
     eliminarCasillas(obstaculosWidgets);
     eliminarCasillas(rutaWidgets);
     eliminarZonaObstaculos();

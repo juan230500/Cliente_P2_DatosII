@@ -39,6 +39,7 @@ public:
     void inicializarView();
     void generarTablero();
     void Muerte(int fila, int columna, bool A);
+    void DibujarInicio(int fila, int columna, bool A);
     void pintarCasilla(int xPos, int yPos, int valorCasilla);
     void posicionarObstaculos(std::string obstaculos);
     void mostrarRuta(std::string ruta, bool A);
@@ -73,6 +74,8 @@ private:
     QPushButton* botonStats;
     QLabel* Muerto1;
     QLabel* Muerto2;
+    QLabel* Gladiador1;
+    QLabel* Gladiador2;
     int contIteraciones;
 };
 
