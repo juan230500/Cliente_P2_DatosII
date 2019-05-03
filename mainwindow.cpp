@@ -131,6 +131,7 @@ void MainWindow::generarEstadisticas()
 }
 
 void MainWindow::posicionarObstaculos(string obstaculos){
+    if(obstaculos == "") return;
     obstaculos = obstaculos.substr(0, obstaculos.size()-1);
     vector<string> vectorObstaculos;
     boost::split(vectorObstaculos, obstaculos, boost::is_any_of("-"));
@@ -218,15 +219,21 @@ void MainWindow::eliminarZonaObstaculos(){
 
 void MainWindow::sigIteracion(){
     contIteraciones++;
-    if(contIteraciones == 3){
+    if(contIteraciones%3 == 0){
+        botonSigIteracion->setDisabled(true);
         cicloParcial();
+        botonSigIteracion->setDisabled(false);
     }else{
-        cicloCompleto();
+        vector<string> muertes = cicloCompleto();
+        string muerte1 = muertes[0];
+        string muerte2 = muertes[1];
+        if(muerte1 != "") Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 0);
+        if(muerte2 != "") Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 1);
     }
 
 }
 
-void MainWindow::cicloCompleto(){
+void MainWindow::resetWidgets(){
     eliminarCasillas(obstaculosWidgets);
     eliminarCasillas(rutaWidgets);
     eliminarZonaObstaculos();
@@ -235,43 +242,49 @@ void MainWindow::cicloCompleto(){
             Pintadas[i][j] = 0;
         }
     }
+}
+
+vector<string> MainWindow::cicloCompleto(){
+    resetWidgets();
     Socket  *socket= &Socket::getInstance();
-    socket->enviar("", 8082, "192.168.100.24");
+    socket->enviar("", 8082, "192.168.42.227");
     string json = socket->escuchar(8081);
-    string obstaculos;
-    string rutaPathfinding;
-    string rutaBacktracking;
-    int g1[9];
-    int g2[9];
+    string obstaculos, rutaPathfinding, rutaBacktracking, muerte1, muerte2;
+    int g1[9], g2[9];
     bool finalizacion;
     int avanceGenetico;
-    string muerte1;
-    string muerte2;
     TraductorCliente *traductor = new TraductorCliente();
-    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico, &rutaPathfinding, &rutaBacktracking, &muerte1, &muerte2);
-    if(muerte1==""){
-        qDebug()<<"GANA GLADIADOR 1";
-        return;
-    }else if(muerte2==""){
-        qDebug()<<"GANA GLADIADOR 2";
-        return;
-    }
-    posicionarObstaculos(obstaculos);
+    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico,
+                                            &rutaPathfinding, &rutaBacktracking, &muerte1, &muerte2);
     mostrarRuta(rutaPathfinding, 0);
     mostrarRuta(rutaBacktracking, 1);
-    Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 0);
-    Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 1);
-    //texto->setWordWrap(true);
-    //texto->setText(QString::fromStdString(json));
+    posicionarObstaculos(obstaculos);
+    vector<string> muertes;
+    muertes.push_back(muerte1);
+    muertes.push_back(muerte2);
+    return muertes;
 }
 
 void MainWindow::cicloParcial(){
-    while(true){
-        cicloCompleto();
-        QTime dieTime= QTime::currentTime().addSecs(2);
-            while (QTime::currentTime() < dieTime)
-                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    Muerto1->setVisible(false);
+    Muerto2->setVisible(false);
+    string muerte1, muerte2 = "";
+    while(muerte1 == "" || muerte2 == ""){
+        vector<string> muertes = cicloCompleto();
+        muerte1 = muertes[0];
+        muerte2 = muertes[1];
+        detenerEjecucion();
     }
+    Muerto1->setVisible(true);
+    Muerto2->setVisible(true);
+    Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 0);
+    Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 1);
+}
+
+void MainWindow::detenerEjecucion(){
+    QTime dieTime= QTime::currentTime().addSecs(2);
+        while (QTime::currentTime() < dieTime)
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
 MainWindow::~MainWindow(){

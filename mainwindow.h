@@ -47,8 +47,10 @@ public:
     void colocarObstaculo(string id, int fila, int columna);
     void crearZonaObstaculo(int fila, int columna, int rango);
     void eliminarZonaObstaculos();
-    void cicloCompleto();
+    void resetWidgets();
+    std::vector<std::string> cicloCompleto();
     void cicloParcial();
+    void detenerEjecucion();
     ~MainWindow();
     QLabel* texto;
 
