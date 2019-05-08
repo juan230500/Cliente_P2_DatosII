@@ -49,10 +49,10 @@ public:
     void eliminarZonaObstaculos();
     void resetWidgets();
     void obtenerJson();
+    void imprimirDatos();
     void cicloParcial();
     void detenerEjecucion();
     ~MainWindow();
-    QLabel* texto;
 
 private slots:
     void sigIteracion();

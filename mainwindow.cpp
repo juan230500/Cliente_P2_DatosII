@@ -223,6 +223,7 @@ void MainWindow::sigIteracion(){
     contIteraciones++;
     resetWidgets();
     obtenerJson();
+    imprimirDatos();
     if(contIteraciones%3 == 0){
         cicloParcial();
     }else{
@@ -252,6 +253,34 @@ void MainWindow::obtenerJson(){
     TraductorCliente *traductor = new TraductorCliente();
     traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico,
                                             &rutaPathfinding, &rutaBacktracking, &muerte1, &muerte2);
+
+}
+
+void MainWindow::imprimirDatos()
+{
+    QString S1="GLADIADOR 1 \n";
+    QString S2="GLADIADOR 2 \n";
+    QString Palabras[10]={
+        "Id",
+        "Edad",
+        "Prob. de supervivencia",
+        "Generación final esperada",
+        "Inteligencia emocional",
+        "Condición física",
+        "Fuerza tronco superior",
+        "Fuerza tronco inferior",
+        "Resistencia",
+        "WAT"
+    };
+
+    for (int i=0;i<10;i++){
+        S1+=Palabras[i]+": "+QString::number(g1[i])+"\n";
+        S2+=Palabras[i]+": "+QString::number(g2[i])+"\n";
+    }
+
+
+    textoA->setText(S1);
+    textoB->setText(S2);
 }
 
 void MainWindow::cicloParcial(){
