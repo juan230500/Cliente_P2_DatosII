@@ -126,8 +126,6 @@ void MainWindow::DibujarInicio(int fila, int columna, bool A)
 
 void MainWindow::generarEstadisticas()
 {
-    VentanaEstadisticas->add(7,9);
-    VentanaEstadisticas->add(8,10);
     VentanaEstadisticas->show();
     hide();
 }
@@ -226,13 +224,12 @@ void MainWindow::sigIteracion(){
     Gladiador2->setVisible(true);
     contIteraciones++;
     resetWidgets();
-    obtenerJson();
-    imprimirDatos();
     if(contIteraciones%3 == 0){
         cicloParcial();
     }else{
-
         obtenerJson();
+        imprimirDatos();
+        VentanaEstadisticas->add(prom1, prom2);
         mostrarRuta(rutaPathfinding, 0);
         mostrarRuta(rutaBacktracking, 1);
         posicionarObstaculos(obstaculos);
@@ -259,7 +256,7 @@ void MainWindow::obtenerJson(){
     socket->enviar("", 8082, "192.168.100.17");
     string json = socket->escuchar(8081);
     TraductorCliente *traductor = new TraductorCliente();
-    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico,
+    traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &prom1, &prom2,
                                             &rutaPathfinding, &rutaBacktracking, &muerte1, &muerte2);
 
 }
@@ -278,7 +275,7 @@ void MainWindow::imprimirDatos()
         "Fuerza tronco superior",
         "Fuerza tronco inferior",
         "Resistencia",
-        "WAT"
+        "Tiempo (us)"
     };
 
     for (int i=0;i<10;i++){
@@ -286,17 +283,21 @@ void MainWindow::imprimirDatos()
         S2+=Palabras[i]+": "+QString::number(g2[i])+"\n";
     }
 
-
     textoA->setText(S1);
     textoB->setText(S2);
 }
 
 void MainWindow::cicloParcial(){
     botonSigIteracion->setDisabled(true);
-    bool terminoJ1 = false, terminoJ2 = false;
+    bool terminoJ1 = false, terminoJ2 = false, primerCiclo = true;
     muerte1 = ""; muerte2 = "";
     while(muerte1 == "" || muerte2 == ""){
         obtenerJson();
+        imprimirDatos();
+        if(primerCiclo){
+            VentanaEstadisticas->add(prom1, prom2);
+            primerCiclo = false;
+        }
         resetWidgets();
         if(muerte1 != "" && !terminoJ1){
             terminoJ1 = true;

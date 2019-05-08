@@ -61,13 +61,15 @@ void Stats::iniciar()
     generacion=0;
 }
 
-void Stats::add(int Resistencia1, int Resistencia2)
+void Stats::add(float Resistencia1, float Resistencia2)
 {
     year<<generacion;
     value<<Resistencia1;
     year2<<generacion;
     value2<<Resistencia2;
+    int tmp= (Resistencia1 > Resistencia2) ? Resistencia1+1 : Resistencia2+1;
     ui->customPlot->xAxis->setRange(0, generacion);
+    ui->customPlot->yAxis->setRange(3.5, tmp );
     ui->customPlot->graph(0)->setData(year, value);
     ui->customPlot->graph(1)->setData(year2, value2);
     ui->customPlot->replot();

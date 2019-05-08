@@ -80,7 +80,8 @@ private:
     QLabel* Gladiador2;
     int contIteraciones;
     std::string obstaculos, rutaPathfinding, rutaBacktracking, muerte1, muerte2;
-    int g1[9], g2[9];
+    float prom1, prom2;
+    int g1[10], g2[10];
     bool finalizacion;
     int avanceGenetico;
     Stats* VentanaEstadisticas;

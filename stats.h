@@ -18,7 +18,7 @@ class Stats : public QDialog
 public:
     void plot();
     void iniciar();
-    void add(int Resistencia1,int Resistencia);
+    void add(float Resistencia1,float Resistencia);
     explicit Stats(QWidget *parent = nullptr);
     ~Stats();
 
@@ -27,8 +27,7 @@ private slots:
 
 private:
     int generacion=0;
-    QVector<double> year, value;
-    QVector<double> year2, value2;
+    QVector<double> year,year2, value, value2;
     QWidget *parent;
     QGraphicsScene* scene;
     QPushButton* OK;
