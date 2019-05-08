@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("GLADIADORES");
+    VentanaEstadisticas=new Stats(this);
     inicializarFrame();
     inicializarScene();
     inicializarView();
@@ -125,8 +126,9 @@ void MainWindow::DibujarInicio(int fila, int columna, bool A)
 
 void MainWindow::generarEstadisticas()
 {
-    Stats* nw=new Stats(this);
-    nw->show();
+    VentanaEstadisticas->add(7,9);
+    VentanaEstadisticas->add(8,10);
+    VentanaEstadisticas->show();
     hide();
 }
 

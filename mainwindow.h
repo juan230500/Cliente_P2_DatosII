@@ -83,6 +83,7 @@ private:
     int g1[9], g2[9];
     bool finalizacion;
     int avanceGenetico;
+    Stats* VentanaEstadisticas;
 };
 
 #endif // MAINWINDOW_H

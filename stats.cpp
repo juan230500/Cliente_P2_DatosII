@@ -3,30 +3,36 @@
 
 void Stats::plot()
 {
-    ui->customPlot->axisRect()->setBackground(QPixmap("./solarpanels.jpg"));
     ui->customPlot->addGraph();
     ui->customPlot->graph()->setLineStyle(QCPGraph::lsLine);
     QPen pen;
-    pen.setColor(QColor(255, 200, 20, 200));
+    pen.setColor(QColor("#08d9d6"));
     pen.setStyle(Qt::DashLine);
     pen.setWidthF(2.5);
     ui->customPlot->graph()->setPen(pen);
-    ui->customPlot->graph()->setBrush(QBrush(QColor(255,200,20,70)));
-    ui->customPlot->graph()->setScatterStyle(QCPScatterStyle(QPixmap("./sun.png")));
+    ui->customPlot->graph()->setBrush(QBrush(QColor(8, 217, 214, 70)));
     // set graph name, will show up in legend next to icon:
-    ui->customPlot->graph()->setName("Data from Photovoltaic\nenergy barometer 2011");
+    ui->customPlot->graph()->setName("Población 1 (A*)");
     // set data:
-    QVector<double> year, value;
-    year  << 2005 << 2006 << 2007 << 2008  << 2009  << 2010 << 2021;
-    value << 2.17 << 3.42 << 4.94 << 10.38 << 15.86 << 29.33 << 52.1;
-    ui->customPlot->graph()->setData(year, value);
+
+
+    ui->customPlot->addGraph();
+    ui->customPlot->graph()->setLineStyle(QCPGraph::lsLine);
+    pen.setColor(QColor("#ff2e63"));
+    pen.setStyle(Qt::DashLine);
+    pen.setWidthF(2.5);
+    ui->customPlot->graph()->setPen(pen);
+    ui->customPlot->graph()->setBrush(QBrush(QColor(255, 46, 99 ,70)));
+    // set graph name, will show up in legend next to icon:
+    ui->customPlot->graph()->setName("Población 2 (Backtracking)");
+    // set data:
 
     // set title of plot:
     ui->customPlot->plotLayout()->insertRow(0);
-    ui->customPlot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->customPlot, "Regenerative Energies", QFont("sans", 12, QFont::Bold)));
+    ui->customPlot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->customPlot, "Resistencia de las poblaciones", QFont("sans", 12, QFont::Bold)));
     // axis configurations:
-    ui->customPlot->xAxis->setLabel("Year");
-    ui->customPlot->yAxis->setLabel("Installed Gigawatts of\nphotovoltaic in the European Union");
+    ui->customPlot->xAxis->setLabel("Generacion");
+    ui->customPlot->yAxis->setLabel("Resistencia promedio");
     ui->customPlot->xAxis2->setVisible(true);
     ui->customPlot->yAxis2->setVisible(true);
     ui->customPlot->xAxis2->setTickLabels(false);
@@ -35,7 +41,7 @@ void Stats::plot()
     ui->customPlot->yAxis2->setTicks(false);
     ui->customPlot->xAxis2->setSubTicks(false);
     ui->customPlot->yAxis2->setSubTicks(false);
-    ui->customPlot->xAxis->setRange(2004.5, 2031.5);
+    ui->customPlot->xAxis->setRange(0, 20);
     ui->customPlot->yAxis->setRange(0, 52);
     // setup legend:
     ui->customPlot->legend->setFont(QFont(font().family(), 7));
@@ -44,12 +50,29 @@ void Stats::plot()
     ui->customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft | Qt::AlignTop);
 }
 
+
+
 void Stats::iniciar()
 {
     QLabel* L1=new QLabel(this);
     QPixmap P1(":/image/image/Fondo1.png");
     L1->resize(1200,700);
     L1->setPixmap(P1);
+    generacion=0;
+}
+
+void Stats::add(int Resistencia1, int Resistencia2)
+{
+    year<<generacion;
+    value<<Resistencia1;
+    year2<<generacion;
+    value2<<Resistencia2;
+    ui->customPlot->xAxis->setRange(0, generacion);
+    ui->customPlot->graph(0)->setData(year, value);
+    ui->customPlot->graph(1)->setData(year2, value2);
+    ui->customPlot->replot();
+    ui->customPlot->update();
+    generacion++;
 }
 
 Stats::Stats(QWidget *parent) :

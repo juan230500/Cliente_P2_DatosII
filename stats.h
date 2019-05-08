@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QGraphicsScene>
 #include <QLabel>
+#include <QColor>
 
 namespace Ui {
 class Stats;
@@ -17,6 +18,7 @@ class Stats : public QDialog
 public:
     void plot();
     void iniciar();
+    void add(int Resistencia1,int Resistencia);
     explicit Stats(QWidget *parent = nullptr);
     ~Stats();
 
@@ -24,6 +26,9 @@ private slots:
     void on_Ok_clicked();
 
 private:
+    int generacion=0;
+    QVector<double> year, value;
+    QVector<double> year2, value2;
     QWidget *parent;
     QGraphicsScene* scene;
     QPushButton* OK;
