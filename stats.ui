@@ -31,8 +31,8 @@
     <rect>
      <x>50</x>
      <y>50</y>
-     <width>800</width>
-     <height>600</height>
+     <width>1100</width>
+     <height>500</height>
     </rect>
    </property>
   </widget>
@@ -41,7 +41,7 @@
   <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
+   <header location="global">qcustomplot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

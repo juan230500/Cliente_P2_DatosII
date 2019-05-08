@@ -49,10 +49,10 @@ public:
     void eliminarZonaObstaculos();
     void resetWidgets();
     void obtenerJson();
+    void imprimirDatos();
     void cicloParcial();
     void detenerEjecucion();
     ~MainWindow();
-    QLabel* texto;
 
 private slots:
     void sigIteracion();
@@ -83,6 +83,7 @@ private:
     int g1[9], g2[9];
     bool finalizacion;
     int avanceGenetico;
+    Stats* VentanaEstadisticas;
 };
 
 #endif // MAINWINDOW_H

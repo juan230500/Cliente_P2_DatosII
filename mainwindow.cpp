@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("GLADIADORES");
+    VentanaEstadisticas=new Stats(this);
     inicializarFrame();
     inicializarScene();
     inicializarView();
@@ -125,8 +126,9 @@ void MainWindow::DibujarInicio(int fila, int columna, bool A)
 
 void MainWindow::generarEstadisticas()
 {
-    Stats* nw=new Stats(this);
-    nw->show();
+    VentanaEstadisticas->add(7,9);
+    VentanaEstadisticas->add(8,10);
+    VentanaEstadisticas->show();
     hide();
 }
 
@@ -224,6 +226,8 @@ void MainWindow::sigIteracion(){
     Gladiador2->setVisible(true);
     contIteraciones++;
     resetWidgets();
+    obtenerJson();
+    imprimirDatos();
     if(contIteraciones%3 == 0){
         cicloParcial();
     }else{
@@ -257,6 +261,34 @@ void MainWindow::obtenerJson(){
     TraductorCliente *traductor = new TraductorCliente();
     traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico,
                                             &rutaPathfinding, &rutaBacktracking, &muerte1, &muerte2);
+
+}
+
+void MainWindow::imprimirDatos()
+{
+    QString S1="GLADIADOR 1 \n";
+    QString S2="GLADIADOR 2 \n";
+    QString Palabras[10]={
+        "Id",
+        "Edad",
+        "Prob. de supervivencia",
+        "Generación final esperada",
+        "Inteligencia emocional",
+        "Condición física",
+        "Fuerza tronco superior",
+        "Fuerza tronco inferior",
+        "Resistencia",
+        "WAT"
+    };
+
+    for (int i=0;i<10;i++){
+        S1+=Palabras[i]+": "+QString::number(g1[i])+"\n";
+        S2+=Palabras[i]+": "+QString::number(g2[i])+"\n";
+    }
+
+
+    textoA->setText(S1);
+    textoB->setText(S2);
 }
 
 void MainWindow::cicloParcial(){
