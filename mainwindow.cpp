@@ -218,17 +218,24 @@ void MainWindow::eliminarZonaObstaculos(){
 }
 
 void MainWindow::sigIteracion(){
+    Muerto1->setVisible(false);
+    Muerto2->setVisible(false);
+    Gladiador1->setVisible(true);
+    Gladiador2->setVisible(true);
     contIteraciones++;
     resetWidgets();
-    obtenerJson();
     if(contIteraciones%3 == 0){
         cicloParcial();
     }else{
+
+        obtenerJson();
         mostrarRuta(rutaPathfinding, 0);
         mostrarRuta(rutaBacktracking, 1);
         posicionarObstaculos(obstaculos);
         if(muerte1 != "") Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 1);
         if(muerte2 != "") Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 0);
+        Muerto1->setVisible(true);
+        Muerto2->setVisible(true);
     }
 }
 
@@ -245,7 +252,7 @@ void MainWindow::resetWidgets(){
 
 void MainWindow::obtenerJson(){
     Socket  *socket= &Socket::getInstance();
-    socket->enviar("", 8082, "172.18.184.24");
+    socket->enviar("", 8082, "192.168.100.17");
     string json = socket->escuchar(8081);
     TraductorCliente *traductor = new TraductorCliente();
     traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &avanceGenetico,
@@ -254,10 +261,10 @@ void MainWindow::obtenerJson(){
 
 void MainWindow::cicloParcial(){
     botonSigIteracion->setDisabled(true);
-    Muerto1->setVisible(false);
-    Muerto2->setVisible(false);
     bool terminoJ1 = false, terminoJ2 = false;
+    muerte1 = ""; muerte2 = "";
     while(muerte1 == "" || muerte2 == ""){
+        obtenerJson();
         resetWidgets();
         if(muerte1 != "" && !terminoJ1){
             terminoJ1 = true;
@@ -274,7 +281,6 @@ void MainWindow::cicloParcial(){
         if(!terminoJ1) mostrarRuta(rutaPathfinding, 0);
         if(!terminoJ2) mostrarRuta(rutaBacktracking, 1);
         posicionarObstaculos(obstaculos);
-        obtenerJson();
         detenerEjecucion();
     }
     botonSigIteracion->setDisabled(false);
