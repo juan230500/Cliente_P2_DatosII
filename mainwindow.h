@@ -48,7 +48,7 @@ public:
     void crearZonaObstaculo(int fila, int columna, int rango);
     void eliminarZonaObstaculos();
     void resetWidgets();
-    std::vector<std::string> cicloCompleto();
+    void obtenerJson();
     void cicloParcial();
     void detenerEjecucion();
     ~MainWindow();
@@ -79,6 +79,10 @@ private:
     QLabel* Gladiador1;
     QLabel* Gladiador2;
     int contIteraciones;
+    std::string obstaculos, rutaPathfinding, rutaBacktracking, muerte1, muerte2;
+    int g1[9], g2[9];
+    bool finalizacion;
+    int avanceGenetico;
 };
 
 #endif // MAINWINDOW_H
