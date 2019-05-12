@@ -78,7 +78,7 @@ private:
     QLabel* Muerto2;
     QLabel* Gladiador1;
     QLabel* Gladiador2;
-    int contIteraciones;
+    int contIteraciones, ganador;
     std::string obstaculos, rutaPathfinding, rutaBacktracking, muerte1, muerte2;
     float prom1, prom2;
     int g1[10], g2[10];

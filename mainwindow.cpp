@@ -41,12 +41,12 @@ void MainWindow::inicializarFrame(){
     textoA=new QLabel(this);
     textoA->setGeometry(750,50,200,500);
     textoA->setStyleSheet("QLabel { background-color : white; color : blue; }");
-    textoA->setText("What ever text");
+    textoA->setAttribute(Qt::WA_TranslucentBackground);
 
     textoB=new QLabel(this);
     textoB->setGeometry(975,50,200,500);
     textoB->setStyleSheet("QLabel { background-color : white; color : blue; }");
-    textoB->setText("What ever text");
+    textoB->setAttribute(Qt::WA_TranslucentBackground);
 
     botonSigIteracion = new QPushButton("Siguiente Iteracion", this);
     connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (sigIteracion()));
@@ -144,7 +144,6 @@ void MainWindow::posicionarObstaculos(string obstaculos){
 }
 
 void MainWindow::mostrarRuta(string ruta, bool A){
-    ruta = ruta.substr(0, ruta.size()-1);
     vector<string> vectorRuta;
     boost::split(vectorRuta, ruta, boost::is_any_of("-"));
     int cantidadElementos = vectorRuta.size();
@@ -233,10 +232,14 @@ void MainWindow::sigIteracion(){
         mostrarRuta(rutaPathfinding, 0);
         mostrarRuta(rutaBacktracking, 1);
         posicionarObstaculos(obstaculos);
-        if(muerte1 != "") Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 1);
-        if(muerte2 != "") Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 0);
-        Muerto1->setVisible(true);
-        Muerto2->setVisible(true);
+        if(muerte1 != ""){
+            Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 1);
+            Muerto1->setVisible(true);
+        }
+        if(muerte2 != ""){
+            Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 0);
+            Muerto2->setVisible(true);
+        }
     }
 }
 
@@ -253,11 +256,11 @@ void MainWindow::resetWidgets(){
 
 void MainWindow::obtenerJson(){
     Socket  *socket= &Socket::getInstance();
-    socket->enviar("", 8082, "192.168.100.17");
+    socket->enviar("", 8082, "192.168.0.15");//"172.18.42.16"
     string json = socket->escuchar(8081);
     TraductorCliente *traductor = new TraductorCliente();
     traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &prom1, &prom2,
-                                            &rutaPathfinding, &rutaBacktracking, &muerte1, &muerte2);
+                                            &rutaPathfinding, &rutaBacktracking, &muerte1, &muerte2, &ganador);
 
 }
 
@@ -291,7 +294,7 @@ void MainWindow::cicloParcial(){
     botonSigIteracion->setDisabled(true);
     bool terminoJ1 = false, terminoJ2 = false, primerCiclo = true;
     muerte1 = ""; muerte2 = "";
-    while(muerte1 == "" || muerte2 == ""){
+    while((muerte1 == "" || muerte2 == "")){
         obtenerJson();
         imprimirDatos();
         if(primerCiclo){
@@ -315,12 +318,16 @@ void MainWindow::cicloParcial(){
         if(!terminoJ2) mostrarRuta(rutaBacktracking, 1);
         posicionarObstaculos(obstaculos);
         detenerEjecucion();
+        if(rutaBacktracking == "99" && rutaPathfinding == "99"){
+            //ganador
+            break;
+        }
     }
     botonSigIteracion->setDisabled(false);
 }
 
 void MainWindow::detenerEjecucion(){
-    QTime dieTime= QTime::currentTime().addSecs(2);
+    QTime dieTime= QTime::currentTime().addSecs(1);
         while (QTime::currentTime() < dieTime)
             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }

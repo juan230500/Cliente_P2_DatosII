@@ -47,7 +47,7 @@ void TraductorCliente::DeserializarInformacionIteracion3(string json,string *obs
 }
 void TraductorCliente::DeserializarInfoDeSimulacion(string json,string *obstaculos,int atributosGladiador1[10],
                                                         int atributosGladiador2[10],bool *finalizacion,float *Prom1,float *Prom2,
-                                                            string *rutaA,string *rutaB,string *muerte1,string *muerte2)
+                                                            string *rutaA,string *rutaB,string *muerte1,string *muerte2, int *ganador)
 {
     Document d;
     d.Parse(json.c_str());
@@ -66,6 +66,7 @@ void TraductorCliente::DeserializarInfoDeSimulacion(string json,string *obstacul
     *finalizacion=d["finalizacion"].GetBool();
     *Prom1=d["AvanceGenetico1"].GetFloat();
     *Prom2=d["AvanceGenetico2"].GetFloat();
+    *ganador=d["ganador"].GetInt();
 }
 string TraductorCliente::SerializarInformacion(string obstaculos1 , int atributosGladiador1[9] , int atributosGladiador2[9], string rutaA,string rutaB, bool finalizacion, int AvanceGenetico,string muerte1, string muerte2)
 {

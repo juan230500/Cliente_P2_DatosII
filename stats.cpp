@@ -10,6 +10,7 @@ void Stats::plot()
     pen.setStyle(Qt::DashLine);
     pen.setWidthF(2.5);
     ui->customPlot->graph()->setPen(pen);
+    ui->customPlot->graph()->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->customPlot->graph()->setBrush(QBrush(QColor(8, 217, 214, 70)));
     // set graph name, will show up in legend next to icon:
     ui->customPlot->graph()->setName("Población 1 (A*)");
@@ -22,6 +23,7 @@ void Stats::plot()
     pen.setStyle(Qt::DashLine);
     pen.setWidthF(2.5);
     ui->customPlot->graph()->setPen(pen);
+    ui->customPlot->graph()->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->customPlot->graph()->setBrush(QBrush(QColor(255, 46, 99 ,70)));
     // set graph name, will show up in legend next to icon:
     ui->customPlot->graph()->setName("Población 2 (Backtracking)");
