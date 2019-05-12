@@ -48,7 +48,7 @@ void MainWindow::inicializarFrame(){
     textoB->setStyleSheet("QLabel { background-color : white; color : blue; }");
     textoB->setAttribute(Qt::WA_TranslucentBackground);
 
-    botonSigIteracion = new QPushButton("Siguiente Iteracion", this);
+    botonSigIteracion = new QPushButton("Iniciar Partida", this);
     connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (sigIteracion()));
     botonSigIteracion->setGeometry(750, 600,150, 50);
 
@@ -217,6 +217,7 @@ void MainWindow::eliminarZonaObstaculos(){
 }
 
 void MainWindow::sigIteracion(){
+    botonSigIteracion->setText("Siguiente Generación");
     Muerto1->setVisible(false);
     Muerto2->setVisible(false);
     Gladiador1->setVisible(true);
@@ -226,20 +227,8 @@ void MainWindow::sigIteracion(){
     if(contIteraciones%3 == 0){
         cicloParcial();
     }else{
-        obtenerJson();
-        imprimirDatos();
-        VentanaEstadisticas->add(prom1, prom2);
-        mostrarRuta(rutaPathfinding, 0);
-        mostrarRuta(rutaBacktracking, 1);
-        posicionarObstaculos(obstaculos);
-        if(muerte1 != ""){
-            Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 1);
-            Muerto1->setVisible(true);
-        }
-        if(muerte2 != ""){
-            Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 0);
-            Muerto2->setVisible(true);
-        }
+        cicloCompleto();
+        if(ganador>=0) declararGanador();
     }
 }
 
@@ -256,7 +245,8 @@ void MainWindow::resetWidgets(){
 
 void MainWindow::obtenerJson(){
     Socket  *socket= &Socket::getInstance();
-    socket->enviar("", 8082, "192.168.0.15");//"172.18.42.16"
+    socket->enviar("", 8082, "192.168.0.15");
+    qDebug()<<"ESCUCHANDOOOOOOOOOO";
     string json = socket->escuchar(8081);
     TraductorCliente *traductor = new TraductorCliente();
     traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &prom1, &prom2,
@@ -290,11 +280,28 @@ void MainWindow::imprimirDatos()
     textoB->setText(S2);
 }
 
+void MainWindow::cicloCompleto(){
+    obtenerJson();
+    imprimirDatos();
+    VentanaEstadisticas->add(prom1, prom2);
+    mostrarRuta(rutaPathfinding, 0);
+    mostrarRuta(rutaBacktracking, 1);
+    posicionarObstaculos(obstaculos);
+    if(muerte1 != ""){
+        Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 1);
+        Muerto1->setVisible(true);
+    }
+    if(muerte2 != ""){
+        Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 0);
+        Muerto2->setVisible(true);
+    }
+}
+
 void MainWindow::cicloParcial(){
     botonSigIteracion->setDisabled(true);
     bool terminoJ1 = false, terminoJ2 = false, primerCiclo = true;
     muerte1 = ""; muerte2 = "";
-    while((muerte1 == "" || muerte2 == "")){
+    while(muerte1 == "" || muerte2 == ""){
         obtenerJson();
         imprimirDatos();
         if(primerCiclo){
@@ -318,12 +325,40 @@ void MainWindow::cicloParcial(){
         if(!terminoJ2) mostrarRuta(rutaBacktracking, 1);
         posicionarObstaculos(obstaculos);
         detenerEjecucion();
-        if(rutaBacktracking == "99" && rutaPathfinding == "99"){
-            //ganador
-            break;
+        if((rutaBacktracking == "99" && terminoJ1) || (rutaPathfinding == "99" && terminoJ2)){
+            if(ganador >= 0){
+                declararGanador();
+                break;
+            }
         }
     }
     botonSigIteracion->setDisabled(false);
+}
+
+void MainWindow::declararGanador(){
+    string msgGanador = (ganador == 0) ? "El Gladiador 1 (A Star) ha sido el ganador!":
+                                         "El Gladiador 2 (Backtracking) ha sido el ganador!";
+    botonSigIteracion->setText("Nueva Partida");
+    QMessageBox msgBox;
+    msgBox.setText(msgGanador.c_str());
+    msgBox.setWindowTitle("Partida terminada");
+    msgBox.exec();
+    botonSigIteracion->disconnect();
+    connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (nuevaPartida()));
+}
+
+void MainWindow::nuevaPartida(){
+    contIteraciones = 0;
+    resetWidgets();
+    Muerto1->setVisible(false);
+    Muerto2->setVisible(false);
+    Gladiador1->setVisible(false);
+    Gladiador2->setVisible(false);
+    botonSigIteracion->setText("Iniciar Partida");
+    botonSigIteracion->disconnect();
+    connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (sigIteracion()));
+    Socket  *socket= &Socket::getInstance();
+    socket->enviar("", 8082, "192.168.0.15");
 }
 
 void MainWindow::detenerEjecucion(){

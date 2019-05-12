@@ -17,6 +17,7 @@
 #include <QPushButton>
 #include <QString>
 #include <QColor>
+#include <QMessageBox>
 #include <QTime>
 #include "stats.h"
 #include "Socket.h"
@@ -51,13 +52,15 @@ public:
     void obtenerJson();
     void imprimirDatos();
     void cicloParcial();
+    void cicloCompleto();
+    void declararGanador();
     void detenerEjecucion();
     ~MainWindow();
 
 private slots:
     void sigIteracion();
+    void nuevaPartida();
     void generarEstadisticas();
-
 
 private:
     bool Pintadas[DIMENSION][DIMENSION]={0};
