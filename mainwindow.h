@@ -53,6 +53,7 @@ public:
     void imprimirDatos();
     void cicloParcial();
     void cicloCompleto();
+    void animacionCicloCompleto();
     void declararGanador();
     void detenerEjecucion();
     ~MainWindow();

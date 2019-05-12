@@ -217,6 +217,7 @@ void MainWindow::eliminarZonaObstaculos(){
 }
 
 void MainWindow::sigIteracion(){
+    botonSigIteracion->setDisabled(true);
     botonSigIteracion->setText("Siguiente Generación");
     Muerto1->setVisible(false);
     Muerto2->setVisible(false);
@@ -230,6 +231,8 @@ void MainWindow::sigIteracion(){
         cicloCompleto();
         if(ganador>=0) declararGanador();
     }
+    qDebug()<<"SALIO";
+    botonSigIteracion->setDisabled(false);
 }
 
 void MainWindow::resetWidgets(){
@@ -284,21 +287,54 @@ void MainWindow::cicloCompleto(){
     obtenerJson();
     imprimirDatos();
     VentanaEstadisticas->add(prom1, prom2);
+    posicionarObstaculos(obstaculos);
+    animacionCicloCompleto();
+}
+
+void MainWindow::animacionCicloCompleto(){
     mostrarRuta(rutaPathfinding, 0);
     mostrarRuta(rutaBacktracking, 1);
-    posicionarObstaculos(obstaculos);
-    if(muerte1 != ""){
-        Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 1);
-        Muerto1->setVisible(true);
-    }
-    if(muerte2 != ""){
-        Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 0);
-        Muerto2->setVisible(true);
+    detenerEjecucion();
+    bool continuarRuta1 = true, continuarRuta2 = true;
+    while(continuarRuta1 || continuarRuta2){
+        resetWidgets();
+        posicionarObstaculos(obstaculos);
+        qDebug()<<rutaPathfinding.c_str()<<to_string(rutaPathfinding.size()).c_str();
+        qDebug()<<rutaBacktracking.c_str()<<to_string(rutaBacktracking.size()).c_str();
+
+        if(rutaPathfinding.size() > 2){
+           if(continuarRuta1) rutaPathfinding = rutaPathfinding.substr(3, rutaPathfinding.size()-3);
+        }else{
+           qDebug()<<"ENTRA1";
+           continuarRuta1 = false;
+        }
+        mostrarRuta(rutaPathfinding, 0);
+
+        if(rutaBacktracking.size() > 2){
+            if(continuarRuta2) rutaBacktracking = rutaBacktracking.substr(3, rutaBacktracking.size()-3);
+        }else{
+            qDebug()<<"ENTRA2";
+            continuarRuta2 = false;
+        }
+        mostrarRuta(rutaBacktracking, 1);
+
+        if(rutaPathfinding.substr(0, 2) == muerte1 && continuarRuta1){
+            qDebug()<<"MUERTE1";
+            Muerte(stoi(muerte1.substr(0,1)), stoi(muerte1.substr(1,1)), 1);
+            Muerto1->setVisible(true);
+            continuarRuta1 = false;
+        }
+        if(rutaBacktracking.substr(0, 2) == muerte2 && continuarRuta2){
+            qDebug()<<"MUERTE2";
+            Muerte(stoi(muerte2.substr(0,1)), stoi(muerte2.substr(1,1)), 0);
+            Muerto2->setVisible(true);
+            continuarRuta2 = false;
+        }
+        if(continuarRuta1 || continuarRuta2) detenerEjecucion();
     }
 }
 
 void MainWindow::cicloParcial(){
-    botonSigIteracion->setDisabled(true);
     bool terminoJ1 = false, terminoJ2 = false, primerCiclo = true;
     muerte1 = ""; muerte2 = "";
     while(muerte1 == "" || muerte2 == ""){
@@ -332,7 +368,6 @@ void MainWindow::cicloParcial(){
             }
         }
     }
-    botonSigIteracion->setDisabled(false);
 }
 
 void MainWindow::declararGanador(){
