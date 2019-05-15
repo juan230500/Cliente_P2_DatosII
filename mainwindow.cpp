@@ -51,7 +51,7 @@ void MainWindow::inicializarFrame(){
     int id = QFontDatabase::addApplicationFont(":/image/image/PRAEBRG_.TTF");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
     QFont f(family);
-    f.setPointSize(16);
+    f.setPointSize(14);
 
     textoA=new QLabel(this);
     textoA->setGeometry(750,50,200,500);
@@ -77,11 +77,11 @@ void MainWindow::inicializarFrame(){
     botonStats->setGeometry(950, 600, 150, 50);
 
     Gladiador1=new QLabel(this);
-    QPixmap Pg1(":/image/image/Gladiador.jpg");
+    QPixmap Pg1(":/image/image/Gladiador.png");
     Gladiador1->setGeometry(700,700,CASILLA,CASILLA);
     Gladiador1->setPixmap(Pg1.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
     Gladiador2=new QLabel(this);
-    QPixmap Pg2(":/image/image/Gladiador.jpg");
+    QPixmap Pg2(":/image/image/Gladiador.png");
     Gladiador2->setGeometry(700,700,CASILLA,CASILLA);
     Gladiador2->setPixmap(Pg2.scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
 
@@ -215,7 +215,7 @@ void MainWindow::colocarObstaculo(string id, int fila, int columna)
     QString path=":/image/image/" + QString::fromStdString(id) + ".png";
     QGraphicsRectItem* casillaObstaculo = tableroWidgets[fila][columna];
     QBrush myBrush;
-    myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+    myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::IgnoreAspectRatio));
     casillaObstaculo->setBrush(myBrush);
     obstaculosWidgets.push_back(casillaObstaculo);
     crearZonaObstaculo(fila, columna, (id == "1") ? 1:2);
