@@ -48,15 +48,25 @@ void MainWindow::inicializarFrame(){
     T2->setGeometry(975,50,200,500);
     T2->setPixmap(PT2.scaled(200,500,Qt::KeepAspectRatio));
 
+    int id = QFontDatabase::addApplicationFont(":/image/image/PRAEBRG_.TTF");
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+    QFont f(family);
+    f.setPointSize(16);
+
     textoA=new QLabel(this);
     textoA->setGeometry(750,50,200,500);
-    textoA->setStyleSheet("QLabel { background-color : white; color : blue; }");
+    textoA->setStyleSheet("QLabel { background-color : white; color : rgba(81,6,0); }");
     textoA->setAttribute(Qt::WA_TranslucentBackground);
+    textoA->setFont( f);
+    textoA->setAlignment(Qt::AlignCenter);
 
     textoB=new QLabel(this);
     textoB->setGeometry(975,50,200,500);
-    textoB->setStyleSheet("QLabel { background-color : white; color : blue; }");
+    textoB->setStyleSheet("QLabel { background-color : white; color : rgba(81,6,0); }");
     textoB->setAttribute(Qt::WA_TranslucentBackground);
+    textoA->setFont( f);
+    textoA->setAlignment(Qt::AlignCenter);
+
 
     botonSigIteracion = new QPushButton("Iniciar Partida", this);
     connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (sigIteracion()));
