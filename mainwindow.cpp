@@ -101,14 +101,17 @@ void MainWindow::inicializarView(){
 }
 
 void MainWindow::generarTablero(){
+    QString path = ":/image/image/base.jpg";
+    QBrush myBrush;
+    myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+    QRectF rect(0,0,CASILLA,CASILLA);
     for(int i = 0; i < DIMENSION; i++){
         for(int j = 0; j < DIMENSION; j++){
-            QRectF rect(0,0,CASILLA,CASILLA);
             QGraphicsRectItem* rItem = new QGraphicsRectItem(rect);
             scene->addItem(rItem);
             tableroWidgets[i][j] = rItem;
             rItem->setPos(j*CASILLA, i*CASILLA);
-            rItem->setBrush(QBrush(QColor(FONDO), Qt::SolidPattern));
+            rItem->setBrush(myBrush);
         }
     }
 }
@@ -156,6 +159,8 @@ void MainWindow::posicionarObstaculos(string obstaculos){
 void MainWindow::mostrarRuta(string ruta, bool A){
     vector<string> vectorRuta;
     boost::split(vectorRuta, ruta, boost::is_any_of("-"));
+    QString path;
+    QBrush myBrush;
     int cantidadElementos = vectorRuta.size();
     for(int indice = 0; indice < cantidadElementos; indice++){
         int xPos = stoi(vectorRuta[indice].substr(0,1));
@@ -171,17 +176,18 @@ void MainWindow::mostrarRuta(string ruta, bool A){
         QGraphicsRectItem* rItem = tableroWidgets[xPos][yPos];
 
         if (Pintadas[xPos][yPos]) {
-            rItem->setBrush(QBrush(QColor(COLOR_RUTA_C), Qt::SolidPattern));
+            path = ":/image/image/Paso3.jpg";
         }
         else if(A){
+            path = ":/image/image/Paso1.jpg";
             Pintadas[xPos][yPos]=1;
-            rItem->setBrush(QBrush(QColor(COLOR_RUTA_A), Qt::SolidPattern));
         }
         else{
+            path = ":/image/image/Paso2.jpg";
             Pintadas[xPos][yPos]=1;
-            rItem->setBrush(QBrush(QColor(COLOR_RUTA_B), Qt::SolidPattern));
         }
-
+        myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
+        rItem->setBrush(myBrush);
         rutaWidgets.push_back(rItem);
     }
 }
@@ -249,9 +255,13 @@ void MainWindow::resetWidgets(){
     eliminarCasillas(obstaculosWidgets);
     eliminarCasillas(rutaWidgets);
     eliminarZonaObstaculos();
+    QString path = ":/image/image/base.jpg";
+    QBrush myBrush;
+    myBrush.setTextureImage(QImage(path).scaled(CASILLA,CASILLA,Qt::KeepAspectRatio));
     for(int i = 0; i < DIMENSION; i++){
         for(int j = 0; j < DIMENSION; j++){
             Pintadas[i][j] = 0;
+            tableroWidgets[i][j]->setBrush(myBrush);
         }
     }
 }
