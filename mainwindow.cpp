@@ -258,7 +258,7 @@ void MainWindow::resetWidgets(){
 
 void MainWindow::obtenerJson(){
     Socket  *socket= &Socket::getInstance();
-    socket->enviar("", 8082, "192.168.0.15");
+    socket->enviar("", 8082, "192.168.100.17");
     qDebug()<<"ESCUCHANDOOOOOOOOOO";
     string json = socket->escuchar(8081);
     TraductorCliente *traductor = new TraductorCliente();
@@ -381,7 +381,9 @@ void MainWindow::cicloParcial(){
 }
 
 void MainWindow::declararGanador(){
-    string msgGanador = (ganador == 0) ? "El Gladiador 1 (A Star) ha sido el ganador!":
+    string msgGanador;
+    if(ganador == 2) msgGanador = "El límite de generaciones (15) se ha alcanzado. Ningún gladiador es digno!";
+    else msgGanador = (ganador == 0) ? "El Gladiador 1 (A Star) ha sido el ganador!":
                                          "El Gladiador 2 (Backtracking) ha sido el ganador!";
     botonSigIteracion->setText("Nueva Partida");
     QMessageBox msgBox;
@@ -403,7 +405,7 @@ void MainWindow::nuevaPartida(){
     botonSigIteracion->disconnect();
     connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (sigIteracion()));
     Socket  *socket= &Socket::getInstance();
-    socket->enviar("", 8082, "192.168.0.15");
+    socket->enviar("", 8082, "192.168.100.17");
 }
 
 void MainWindow::detenerEjecucion(){
