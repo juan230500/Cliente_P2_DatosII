@@ -9,5 +9,9 @@
         <file>image/pergamino.jpg</file>
         <file>image/Fondo1.jpg</file>
         <file>image/PRAEBRG_.TTF</file>
+        <file>image/Paso1.jpg</file>
+        <file>image/Paso2.jpg</file>
+        <file>image/Paso3.jpg</file>
+        <file>image/base.jpg</file>
     </qresource>
 </RCC>
