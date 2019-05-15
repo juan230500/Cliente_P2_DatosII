@@ -64,8 +64,8 @@ void MainWindow::inicializarFrame(){
     textoB->setGeometry(975,50,200,500);
     textoB->setStyleSheet("QLabel { background-color : white; color : rgba(81,6,0); }");
     textoB->setAttribute(Qt::WA_TranslucentBackground);
-    textoA->setFont( f);
-    textoA->setAlignment(Qt::AlignCenter);
+    textoB->setFont( f);
+    textoB->setAlignment(Qt::AlignCenter);
 
 
     botonSigIteracion = new QPushButton("Iniciar Partida", this);
@@ -406,6 +406,8 @@ void MainWindow::declararGanador(){
     else msgGanador = (ganador == 0) ? "El Gladiador 1 (A Star) ha sido el ganador!":
                                          "El Gladiador 2 (Backtracking) ha sido el ganador!";
     botonSigIteracion->setText("Nueva Partida");
+    textoA->setText("");
+    textoB->setText("");
     QMessageBox msgBox;
     msgBox.setText(msgGanador.c_str());
     msgBox.setWindowTitle("Partida terminada");

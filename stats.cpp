@@ -57,7 +57,7 @@ void Stats::plot()
 void Stats::iniciar()
 {
     QLabel* L1=new QLabel(this);
-    QPixmap P1(":/image/image/Fondo1.png");
+    QPixmap P1(":/image/image/Fondo1.jpg");
     L1->resize(1200,700);
     L1->setPixmap(P1);
     generacion=0;
