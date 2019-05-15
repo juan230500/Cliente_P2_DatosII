@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+QT       +=serialport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = Cliente_P2
@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    arduino.cpp \
         main.cpp \
         mainwindow.cpp \
         Socket.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
     qcustomplot.cpp
 
 HEADERS += \
+    arduino.h \
         mainwindow.h \
         Socket.h \
     traductorcliente.h \

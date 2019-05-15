@@ -6,7 +6,7 @@
 #define COLOR_RUTA_A "#ff2e63"
 #define COLOR_RUTA_B "#08d9d6"
 #define COLOR_RUTA_C "#6a2c70"
-
+#include "arduino.h"
 const int CASILLA = 68*10/DIMENSION;
 
 using namespace std;
@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("GLADIADORES");
     VentanaEstadisticas=new Stats(this);
+
     inicializarFrame();
     inicializarScene();
     inicializarView();
@@ -30,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::inicializarFrame(){
+
     QLabel* L1=new QLabel(this);
     QPixmap P1(":/image/image/Fondo1.jpg");
     L1->resize(1200,700);
@@ -278,8 +280,9 @@ void MainWindow::resetWidgets(){
 
 void MainWindow::obtenerJson(){
     Socket  *socket= &Socket::getInstance();
-    socket->enviar("", 8082, "192.168.100.17");
+    socket->enviar("", 8082, "192.168.100.20");
     qDebug()<<"ESCUCHANDOOOOOOOOOO";
+
     string json = socket->escuchar(8081);
     TraductorCliente *traductor = new TraductorCliente();
     traductor->DeserializarInfoDeSimulacion(json, &obstaculos, g1, g2, &finalizacion, &prom1, &prom2,
@@ -291,6 +294,8 @@ void MainWindow::imprimirDatos()
 {
     QString S1="GLADIADOR 1 \n";
     QString S2="GLADIADOR 2 \n";
+    QString S3="G1:";
+    QString S4="   G2:";
     QString Palabras[10]={
         "Id",
         "Edad",
@@ -307,8 +312,14 @@ void MainWindow::imprimirDatos()
     for (int i=0;i<10;i++){
         S1+=Palabras[i]+": "+QString::number(g1[i])+"\n";
         S2+=Palabras[i]+": "+QString::number(g2[i])+"\n";
+        S3+=QString::number(g1[i])+",";
+        S4+=QString::number(g2[i])+",";
     }
-
+    S3+=S4;
+   // arduino *serial = &arduino::getInstance();
+    //serial->escribir(S3.toStdString());
+    //sleep(50);
+    //serial->escribir(S4.toStdString());
     textoA->setText(S1);
     textoB->setText(S2);
 }
@@ -427,7 +438,7 @@ void MainWindow::nuevaPartida(){
     botonSigIteracion->disconnect();
     connect(botonSigIteracion, SIGNAL (clicked()),this, SLOT (sigIteracion()));
     Socket  *socket= &Socket::getInstance();
-    socket->enviar("", 8082, "192.168.100.17");
+    socket->enviar("", 8082, "192.168.100.20");
 }
 
 void MainWindow::detenerEjecucion(){
