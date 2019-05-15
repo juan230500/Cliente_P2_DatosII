@@ -19,6 +19,7 @@
 #include <QColor>
 #include <QMessageBox>
 #include <QTime>
+#include <QFontDatabase>
 #include "stats.h"
 #include "Socket.h"
 #include "traductorcliente.h"
