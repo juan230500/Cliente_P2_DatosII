@@ -1,12 +1,12 @@
 <RCC>
     <qresource prefix="/image">
         <file>image/Gladiador.jpg</file>
-        <file>image/Fondo1.png</file>
         <file>image/2.png</file>
         <file>image/3.png</file>
         <file>image/1.png</file>
         <file>image/F1.png</file>
         <file>image/F2.png</file>
-        <file>image/labelBackground.png</file>
+        <file>image/pergamino.jpg</file>
+        <file>image/Fondo1.jpg</file>
     </qresource>
 </RCC>

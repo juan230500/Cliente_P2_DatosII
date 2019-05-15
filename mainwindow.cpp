@@ -31,12 +31,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::inicializarFrame(){
     QLabel* L1=new QLabel(this);
-    QPixmap P1(":/image/image/Fondo1.png");
+    QPixmap P1(":/image/image/Fondo1.jpg");
     L1->resize(1200,700);
-    L1->setPixmap(P1);
+    L1->setPixmap(P1.scaled(1200,700,Qt::IgnoreAspectRatio));
 
     frame=new QFrame(this);
     frame->setGeometry(0,0,700,700);
+
+    QLabel* T1=new QLabel(this);
+    QPixmap PT1(":/image/image/pergamino.jpg");
+    T1->setGeometry(750,50,200,500);
+    T1->setPixmap(PT1.scaled(200,500,Qt::KeepAspectRatio));
+
+    QLabel* T2=new QLabel(this);
+    QPixmap PT2(":/image/image/pergamino.jpg");
+    T2->setGeometry(975,50,200,500);
+    T2->setPixmap(PT2.scaled(200,500,Qt::KeepAspectRatio));
 
     textoA=new QLabel(this);
     textoA->setGeometry(750,50,200,500);
